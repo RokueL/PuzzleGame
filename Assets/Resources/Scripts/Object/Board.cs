@@ -24,6 +24,8 @@ public class Board : MonoBehaviour
                 Vector2 tempVec2 = new Vector2((float)i/1.5f,(float)j/1.5f);
                 var tileSet = ObjectPoolManager.Instance.Pool.Get();
                 tileSet.transform.position = tempVec2;
+                tileSet.transform.parent = this.transform;
+                tileSet.name = "( " + i + " , " + j + " )";
             }
         }
     }

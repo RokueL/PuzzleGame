@@ -646,7 +646,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d6cbd592ccb4147adeb3a5eecec643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 7559416169792294298, guid: 82febda3c7bc95d4e84cf8b4f91d8d96, type: 3}
+  bgPrefab: {fileID: 7559416169792294298, guid: 82febda3c7bc95d4e84cf8b4f91d8d96, type: 3}
+  dotPrefab: {fileID: 3781454081880115859, guid: fcfd15f54398c9b49bf155b364c7b69d, type: 3}
   tiles:
   - {fileID: 0}
   - {fileID: 0}
