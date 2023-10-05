@@ -6,16 +6,41 @@ using UnityEngine.U2D;
 
 public class Dot : MonoBehaviour
 {
-    int value;
-    public IObjectPool<GameObject> dotPool { get; set; }
+
+    Vector2 firstTouchPosition;
+    Vector2 finalTouchPosition;
+
+    float swipeAngle;
+
+    public int value;
+    public IObjectPool<GameObject> dottPool { get; set; }
     SpriteAtlas spAtlas;
     SpriteRenderer spriteRenderer;
+
+    private void OnMouseDown()
+    {
+        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(firstTouchPosition);
+    }
+    private void OnMouseUp()
+    {
+        finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(finalTouchPosition);
+        CalculateAngle();
+    }
+
+    void CalculateAngle()
+    {
+        swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * Mathf.Rad2Deg;
+        Debug.Log(swipeAngle);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spAtlas = Resources.Load<SpriteAtlas>("Textures/Dot");
-        value = Random.Range(0, 5);
     }
 
     // Update is called once per frame

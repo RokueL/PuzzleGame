@@ -6,12 +6,14 @@ public class Board : MonoBehaviour
 {
     public int Width;
     public int Height;
-    Tile[,] allTiles;
+    GameObject[,] allTiles;
+    GameObject[,] allDots;
 
     // Start is called before the first frame update
     void Start()
     {
-        allTiles = new Tile[Width, Height];
+        allTiles = new GameObject[Width, Height];
+        allDots = new GameObject[Width, Height];
         SetUp();
     }
 
@@ -26,6 +28,13 @@ public class Board : MonoBehaviour
                 tileSet.transform.position = tempVec2;
                 tileSet.transform.parent = this.transform;
                 tileSet.name = "( " + i + " , " + j + " )";
+                allTiles[i, j] = tileSet;
+
+                var dotSet = ObjectPoolManager.Instance.dotPool.Get();
+                dotSet.transform.position = tempVec2;
+                dotSet.transform.parent = this.transform;
+                dotSet.name = "( " + i + " , " + j + " )";
+                allDots[i, j] = dotSet;
             }
         }
     }

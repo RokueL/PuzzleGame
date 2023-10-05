@@ -7,12 +7,11 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Resources/Scenes/FirstScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    guid: ddfe30f7de88e7b46be9e4e0182b0d84
   - enabled: 1
     path: Assets/Resources/Scenes/LobbyScene.unity
-    guid: 8486e280d643e6e4dae0d0fa61b81fe5
+    guid: 50ca98cd0de47ce4c9e4015a06894499
   - enabled: 1
     path: Assets/Resources/Scenes/GameScene.unity
-    guid: 50ca98cd0de47ce4c9e4015a06894499
-  m_configObjects:
-    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: f6b6bd6cc0fc6804ebc7d2449c35ab64, type: 2}
+    guid: 8486e280d643e6e4dae0d0fa61b81fe5
+  m_configObjects: {}

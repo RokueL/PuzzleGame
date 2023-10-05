@@ -12,6 +12,8 @@ public class ObjectPoolManager : MonoBehaviour
     int defaultCapacity = 50;
     int maxPoolSize = 100;
 
+    public GameObject PoolIndex;
+
     public GameObject[] tiles = new GameObject[50];
 
 
@@ -34,6 +36,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     void Init()
     {
+        //=================< 풀링 선언         >=====================
         Pool = new ObjectPool<GameObject>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool,
         OnDestroyPoolObject, true, defaultCapacity, maxPoolSize);
 
@@ -45,8 +48,11 @@ public class ObjectPoolManager : MonoBehaviour
         {
             Tile tile = CreatePooledItem().GetComponent<Tile>();
             tile.bgPool.Release(tile.gameObject);
-            Dot dot= CreatePooledItem().GetComponent<Dot>();
-            dot.dotPool.Release(dot.gameObject);
+            Dot dot= CreatePooledItem2().GetComponent<Dot>();
+            dot.dottPool.Release(dot.gameObject);
+
+            tile.transform.parent = PoolIndex.transform;
+            dot.transform.parent = PoolIndex.transform;
         }
     }
 
@@ -61,7 +67,7 @@ public class ObjectPoolManager : MonoBehaviour
     private GameObject CreatePooledItem2()
     {
         GameObject poolGO2 = Instantiate(dotPrefab);
-        poolGO2.GetComponent<Dot>().dotPool = this.dotPool;
+        poolGO2.GetComponent<Dot>().dottPool = this.dotPool;
 
         return poolGO2;
     }
@@ -72,6 +78,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     private void OnTakeFromPool2(GameObject poolGo2)
     {
+        poolGo2.GetComponent<Dot>().value = Random.Range(0, 5);
         poolGo2.SetActive(true);
     }
 

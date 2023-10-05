@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,8 +11,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var dotSet = ObjectPoolManager.Instance.dotPool.Get();
-        dotSet.transform.position = this.transform.position;
+
     }
 
     // Update is called once per frame
