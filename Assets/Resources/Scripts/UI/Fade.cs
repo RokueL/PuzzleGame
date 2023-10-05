@@ -22,7 +22,7 @@ public class Fade : MonoBehaviour
     public IEnumerator FadeInStartText() //ÅØ½ºÆ®
     {
         tmp.SetActive(true);
-        for (float f = 1f; f > 0; f -= 0.002f)
+        for (float f = 1f; f > 0; f -= 0.05f)
         {
             Color c = tmp.GetComponent<TextMeshProUGUI>().color;
             c.a = f;
@@ -37,7 +37,7 @@ public class Fade : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         FadePannel.SetActive(true);
-        for (float f = 1f; f > 0; f -= 0.002f)
+        for (float f = 1f; f > 0; f -= 0.05f)
         {
             Color c = FadePannel.GetComponent<Image>().color;
             c.a = f;
@@ -53,7 +53,7 @@ public class Fade : MonoBehaviour
         Color t = tmp.GetComponent<TextMeshProUGUI>().color;
         t.a = 0;
         tmp.GetComponent<TextMeshProUGUI>().color = t;
-        for (float f = 0f; f < 1; f += 0.002f)
+        for (float f = 0f; f < 1; f += 0.05f)
         {
             Color c = tmp.GetComponent<TextMeshProUGUI>().color;
             c.a = f;
