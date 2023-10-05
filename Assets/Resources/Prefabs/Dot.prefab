@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 0
+  spAtlas: {fileID: 4343727234628468602, guid: 890c5ebb121235845a08879d8d859ccf, type: 2}
 --- !u!58 &6797525708671107066
 CircleCollider2D:
   m_ObjectHideFlags: 0
