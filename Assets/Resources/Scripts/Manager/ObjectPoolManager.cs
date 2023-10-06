@@ -9,8 +9,8 @@ public class ObjectPoolManager : MonoBehaviour
 
     public GameObject bgPrefab;
     public GameObject dotPrefab;
-    int defaultCapacity = 50;
-    int maxPoolSize = 100;
+    int defaultCapacity = 100;
+    int maxPoolSize = 150;
 
     public GameObject PoolIndex;
 
@@ -79,6 +79,7 @@ public class ObjectPoolManager : MonoBehaviour
     private void OnTakeFromPool2(GameObject poolGo2)
     {
         poolGo2.GetComponent<Dot>().value = Random.Range(0, 5);
+        poolGo2.GetComponent<Dot>().isMatch = false;
         poolGo2.SetActive(true);
     }
 

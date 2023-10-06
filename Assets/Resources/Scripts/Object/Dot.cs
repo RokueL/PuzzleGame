@@ -17,10 +17,12 @@ public class Dot : MonoBehaviour
     public int column;
     public int row;
     public int targetX, targetY;
+    private int exrow, excol;
 
     public bool isMatch;
 
     Board board;
+    FindMatch findMatch;
 
     GameObject otherDot;
 
@@ -42,67 +44,74 @@ public class Dot : MonoBehaviour
     {
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * Mathf.Rad2Deg;
         Debug.Log(swipeAngle);
-        MoveDots();
+        if(!isMatch)
+            MoveDots();
     }
     void MoveDots()
     {
         if (swipeAngle > 45 && swipeAngle <= 135 && row < board.Height - 1) //윗 방향
         {
             otherDot = board.allDots[column, row+1]; //윗 방향 도트 가져오기
-            otherDot.GetComponent<Dot>().row -= 1; // 가져온 도트를 밑으로 내려놓기
-            row += 1;
+            if (otherDot.GetComponent<Dot>().isMatch == false) // 이미 매칭이 된 거면 못 움직이게 한다.
+            {
+                otherDot.GetComponent<Dot>().row -= 1; // 가져온 도트를 밑으로 내려놓기
+                row += 1;
+            }
         }
         else if(swipeAngle > -45 && swipeAngle <= 45 && column < board.Width - 1) // 오른쪽 방향
         {
             otherDot = board.allDots[column + 1, row]; // 같음
-            otherDot.GetComponent<Dot>().column -= 1; //같음
-            column += 1;
+            if (otherDot.GetComponent<Dot>().isMatch == false)
+            {
+                otherDot.GetComponent<Dot>().column -= 1; //같음
+                column += 1;
+            }
         }
         else if (swipeAngle >= -135 && swipeAngle < -45 && row > 0) // 아랫 방향
         {
             otherDot = board.allDots[column, row - 1];
-            otherDot.GetComponent<Dot>().row += 1;
-            row -= 1;
+            if (otherDot.GetComponent<Dot>().isMatch == false)
+            {
+                otherDot.GetComponent<Dot>().row += 1;
+                row -= 1;
+            }
         }
         else if (swipeAngle > 135 || swipeAngle <= -135 && column > 0) // 왼쪽 방향 여기는 각도가 끝의 각이라서 ||로 처리한다.
         {
             otherDot = board.allDots[column - 1, row];
-            otherDot.GetComponent<Dot>().column += 1;
-            column -= 1;
+            if (otherDot.GetComponent<Dot>().isMatch == false)
+            {
+                otherDot.GetComponent<Dot>().column += 1;
+                column -= 1;
+            }
         }
         else
         {
-
+            
         }
+        StartCoroutine(CheckMoveGo());
     }
 
-    void CheckMath()
+
+    public IEnumerator CheckMoveGo()
     {
-        if(column > 0 && column < board.Width - 1)
+        yield return new WaitForSeconds(0.3f);
+        if(otherDot != null)
         {
-            GameObject left = board.allDots[column-1, row];
-            GameObject right = board.allDots[column +1, row];
-            if(left.GetComponent<Dot>().value == value && right.GetComponent<Dot>().value == value)
+            if(!isMatch && !otherDot.GetComponent<Dot>().isMatch)
             {
-                left.GetComponent<Dot>().isMatch = true;
-                right.GetComponent<Dot>().isMatch = true;
-                isMatch = true;
+                otherDot.GetComponent<Dot>().row = row;
+                otherDot.GetComponent<Dot>().column = column;
+                row = exrow;
+                column = excol;
             }
-        }
+            else {
+                board.DestroyCheck();
+            }
 
-        if (row > 0 && row < board.Height - 1)
-        {
-            GameObject up = board.allDots[column, row +1];
-            GameObject down = board.allDots[column , row -1];
-            if (up.GetComponent<Dot>().value == this.value && down.GetComponent<Dot>().value == this.value)
-            {
-                up.GetComponent<Dot>().isMatch = true;
-                down.GetComponent<Dot>().isMatch = true;
-                isMatch = true;
-            }
+            otherDot = null;
         }
     }
-
 
 
 
@@ -113,13 +122,17 @@ public class Dot : MonoBehaviour
         spAtlas = Resources.Load<SpriteAtlas>("Textures/dotAtlas");
 
         board = FindObjectOfType<Board>();
+        findMatch = FindObjectOfType<FindMatch>();
+
         targetX = (int)transform.position.x;
         targetY = (int)transform.position.y;
         column = targetX;
         row = targetY;
+        exrow = row;
+        excol = column;
     }
 
-    void colorCheck()
+    public void colorCheck()
     {
         switch (value)
         {
@@ -145,10 +158,6 @@ public class Dot : MonoBehaviour
     void Update()
     {
         colorCheck();
-        if (isMatch)
-        {
-            spriteRenderer.color = new Color(0f, 0f, 0f);
-        }
         targetX = column;
         targetY = row;
 
@@ -170,26 +179,34 @@ public class Dot : MonoBehaviour
         {
             tempPosition = new Vector2(targetX, transform.position.y); //바뀐 column위치로 저장~
             transform.position = Vector2.Lerp(transform.position, tempPosition, 0.4f); // 천천히 이동하도록 해요
+            if (board.allDots[column,row] != this.gameObject) // 값은 옮겼지만 오브젝트가 매칭이 안되면 새로 등록시킨다.
+            {
+                board.allDots[column, row] = this.gameObject;
+            }
+            findMatch.MatchFinder();
         }
         else // 제자리면 암것도 하지 말어요
         {
             tempPosition = new Vector2(targetX, transform.position.y);
             transform.position = tempPosition;
-            board.allDots[column, row] = this.gameObject;
+            // 원래 있던 녀석은 딱히 의미가 없어져서 위로 치웠다
         }
 
         if (y > 0.1f) //y도 같아요
         {
             tempPosition = new Vector2(transform.position.x, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, 0.4f);
+            if (board.allDots[column, row] != this.gameObject)
+            {
+                board.allDots[column, row] = this.gameObject;
+            }
+            findMatch.MatchFinder();
         }
         else
         {
             tempPosition = new Vector2(transform.position.x, targetY);
             transform.position = tempPosition;
-            board.allDots[column, row] = this.gameObject;
         }
 
-        CheckMath();
     }
 }
