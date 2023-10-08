@@ -32,58 +32,58 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(board.state == Enum.Enum.State.Move)
+            firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(firstTouchPosition);
     }
     private void OnMouseUp()
     {
-        finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        CalculateAngle();
+        if (board.state == Enum.Enum.State.Move)
+        {
+            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CalculateAngle();
+        }
     }
     void CalculateAngle()
     {
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * Mathf.Rad2Deg;
         Debug.Log(swipeAngle);
-        if(!isMatch)
-            MoveDots();
+        MoveDots();
+        board.state = Enum.Enum.State.Wait;
     }
     void MoveDots()
     {
         if (swipeAngle > 45 && swipeAngle <= 135 && row < board.Height - 1) //윗 방향
         {
-            otherDot = board.allDots[column, row+1]; //윗 방향 도트 가져오기
-            if (otherDot.GetComponent<Dot>().isMatch == false) // 이미 매칭이 된 거면 못 움직이게 한다.
-            {
-                otherDot.GetComponent<Dot>().row -= 1; // 가져온 도트를 밑으로 내려놓기
-                row += 1;
-            }
+            otherDot = board.allDots[column, row + 1]; //윗 방향 도트 가져오기
+            exrow = row;
+            excol = column;
+            otherDot.GetComponent<Dot>().row -= 1; // 가져온 도트를 밑으로 내려놓기
+            row += 1;
         }
-        else if(swipeAngle > -45 && swipeAngle <= 45 && column < board.Width - 1) // 오른쪽 방향
+        else if (swipeAngle > -45 && swipeAngle <= 45 && column < board.Width - 1) // 오른쪽 방향
         {
             otherDot = board.allDots[column + 1, row]; // 같음
-            if (otherDot.GetComponent<Dot>().isMatch == false)
-            {
-                otherDot.GetComponent<Dot>().column -= 1; //같음
-                column += 1;
-            }
+            exrow = row;
+            excol = column;
+            otherDot.GetComponent<Dot>().column -= 1; //같음
+            column += 1;
         }
         else if (swipeAngle >= -135 && swipeAngle < -45 && row > 0) // 아랫 방향
         {
             otherDot = board.allDots[column, row - 1];
-            if (otherDot.GetComponent<Dot>().isMatch == false)
-            {
-                otherDot.GetComponent<Dot>().row += 1;
-                row -= 1;
-            }
+            exrow = row;
+            excol = column;
+            otherDot.GetComponent<Dot>().row += 1;
+            row -= 1;
         }
         else if (swipeAngle > 135 || swipeAngle <= -135 && column > 0) // 왼쪽 방향 여기는 각도가 끝의 각이라서 ||로 처리한다.
         {
             otherDot = board.allDots[column - 1, row];
-            if (otherDot.GetComponent<Dot>().isMatch == false)
-            {
-                otherDot.GetComponent<Dot>().column += 1;
-                column -= 1;
-            }
+            exrow = row;
+            excol = column;
+            otherDot.GetComponent<Dot>().column += 1;
+            column -= 1;
         }
         else
         {
@@ -95,7 +95,7 @@ public class Dot : MonoBehaviour
 
     public IEnumerator CheckMoveGo()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         if(otherDot != null)
         {
             if(!isMatch && !otherDot.GetComponent<Dot>().isMatch)
@@ -104,6 +104,8 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().column = column;
                 row = exrow;
                 column = excol;
+                yield return new WaitForSeconds(0.5f);
+                board.state = Enum.Enum.State.Move;
             }
             else {
                 board.DestroyCheck();
@@ -126,10 +128,10 @@ public class Dot : MonoBehaviour
 
         targetX = (int)transform.position.x;
         targetY = (int)transform.position.y;
-        column = targetX;
-        row = targetY;
-        exrow = row;
-        excol = column;
+        //column = targetX;
+        //row = targetY;
+       // exrow = row;
+        //excol = column;
     }
 
     public void colorCheck()
@@ -143,7 +145,7 @@ public class Dot : MonoBehaviour
                 spriteRenderer.sprite = spAtlas.GetSprite("YellowDot");
                 break;
             case 2:
-                spriteRenderer.sprite = spAtlas.GetSprite("GreenDot");
+                spriteRenderer.sprite = spAtlas.GetSprite("GreenDot");  
                 break;
             case 3:
                 spriteRenderer.sprite = spAtlas.GetSprite("BlueDot");
@@ -178,7 +180,7 @@ public class Dot : MonoBehaviour
         if(x > 0.1f) //제자리만 아니면 이동한다고요~
         {
             tempPosition = new Vector2(targetX, transform.position.y); //바뀐 column위치로 저장~
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.4f); // 천천히 이동하도록 해요
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f); // 천천히 이동하도록 해요
             if (board.allDots[column,row] != this.gameObject) // 값은 옮겼지만 오브젝트가 매칭이 안되면 새로 등록시킨다.
             {
                 board.allDots[column, row] = this.gameObject;
@@ -195,7 +197,7 @@ public class Dot : MonoBehaviour
         if (y > 0.1f) //y도 같아요
         {
             tempPosition = new Vector2(transform.position.x, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.4f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f);
             if (board.allDots[column, row] != this.gameObject)
             {
                 board.allDots[column, row] = this.gameObject;

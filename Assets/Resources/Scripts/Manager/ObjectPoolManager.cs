@@ -14,7 +14,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     public GameObject PoolIndex;
 
-    public GameObject[] tiles = new GameObject[50];
+    public GameObject[] tiles = new GameObject[100];
 
 
     public IObjectPool<GameObject> Pool { get; private set; }

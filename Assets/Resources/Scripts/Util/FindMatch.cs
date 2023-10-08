@@ -64,7 +64,7 @@ public class FindMatch : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(.8f);
+        yield return new WaitForSeconds(.4f);
         board.DestroyCheck();
     }
 

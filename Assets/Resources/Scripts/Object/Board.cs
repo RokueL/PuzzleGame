@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Enum;
+
 
 public class Board : MonoBehaviour
 {
+    public Enum.Enum.State state = Enum.Enum.State.Move;
+
     int downCount;
     public int Width;
     public int Height;
+    public int offset;
     public GameObject[,] allTiles;
     public GameObject[,] allDots;
 
@@ -40,6 +45,8 @@ public class Board : MonoBehaviour
                 allTiles[i, j] = tileSet;
 
                 var dotSet = ObjectPoolManager.Instance.dotPool.Get();
+                dotSet.GetComponent<Dot>().row = j;
+                dotSet.GetComponent<Dot>().column = i;
                 dotSet.transform.position = tempVec2;
                 dotSet.transform.parent = this.transform;
                 dotSet.name = "( " + i + " , " + j + " )";
@@ -56,21 +63,53 @@ public class Board : MonoBehaviour
             {
                 if (allDots[i, j] == null)
                 {
-                    Vector2 tempVec = new Vector2(i, j);
+                    Vector2 tempVec = new Vector2(i, j + offset);
                     var dotSet = ObjectPoolManager.Instance.dotPool.Get();
-                    dotSet.GetComponent<Dot>().colorCheck();
                     dotSet.transform.position = tempVec;
-                    dotSet.name = "new ( " + i + " , " + j + " )"; ;
+                    dotSet.name = "new ( " + i + " , " + j + " )";
                     allDots[i, j] = dotSet;
                     allDots[i, j].GetComponent<Dot>().row = j;
                     allDots[i, j].GetComponent<Dot>().column = i;
-
                 }
             }
         }
     }
 
-    public void DestroyCheck()
+    bool reSpawnCheck()
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
+                if (allDots[i, j] != null)
+                {
+                    if (allDots[i, j].GetComponent<Dot>().isMatch)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    IEnumerator SpawnDots()
+    {
+        SpawnDot();
+        yield return new WaitForSeconds(.5f);
+
+        while (reSpawnCheck())
+        {
+            yield return new WaitForSeconds(.5f);
+            DestroyCheck();
+        }
+
+        yield return new WaitForSeconds(.5f);
+        state = Enum.Enum.State.Move;
+    }
+
+
+    public void DestroyCheck() // 매칭 되는 거 부수기
     {
         for (int i = 0; i < Width; i++)
         {
@@ -81,7 +120,7 @@ public class Board : MonoBehaviour
                     if (allDots[i, j].GetComponent<Dot>().isMatch == true)
                     {
                         allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
-                        allDots[i,j] = null;
+                        allDots[i, j] = null;
                     }
                 }
             }
@@ -89,7 +128,7 @@ public class Board : MonoBehaviour
         StartCoroutine(DownCheck());
     }
 
-    IEnumerator DownCheck()
+    IEnumerator DownCheck() // 부수고 난 다음 라인 밑으로 내리기
     {
         downCount = 0;
         for (int i = 0; i < Width; i++)
@@ -108,8 +147,8 @@ public class Board : MonoBehaviour
             }
             downCount = 0;
         }
-        yield return new WaitForSeconds(.4f);
-        SpawnDot();
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SpawnDots());
     }
 
     // Update is called once per frame
