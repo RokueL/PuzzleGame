@@ -16,6 +16,8 @@ public class Board : MonoBehaviour
     public GameObject[,] allTiles;
     public GameObject[,] allDots;
 
+    bool isSpawn;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +75,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(spawnDelay());
     }
 
     bool reSpawnCheck()
@@ -95,17 +98,25 @@ public class Board : MonoBehaviour
 
     IEnumerator SpawnDots()
     {
-        SpawnDot();
-        yield return new WaitForSeconds(.5f);
-
-        while (reSpawnCheck())
+        if (!isSpawn)
         {
-            yield return new WaitForSeconds(.5f);
-            DestroyCheck();
-        }
+            SpawnDot();
+            yield return new WaitForSeconds(.4f);
 
-        yield return new WaitForSeconds(.5f);
+            while (reSpawnCheck())
+            {
+                yield return new WaitForSeconds(.4f);
+                DestroyCheck();
+            }
+        }
         state = Enum.Enum.State.Move;
+    }
+
+    IEnumerator spawnDelay()
+    {
+        isSpawn = true;
+        yield return new WaitForSeconds(.8f);
+        isSpawn = false;
     }
 
 
