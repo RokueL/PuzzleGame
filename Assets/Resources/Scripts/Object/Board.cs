@@ -34,6 +34,7 @@ public class Board : MonoBehaviour
     //    DestroyCheck();
     //    CancelInvoke();
     //}
+    //
 
     void SetUp()
     {
