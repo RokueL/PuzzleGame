@@ -18,11 +18,13 @@ public class Board : MonoBehaviour
 
     bool isSpawn;
 
+    FindMatch findMatch;
     // Start is called before the first frame update
     void Start()
     {
         allTiles = new GameObject[Width, Height];
         allDots = new GameObject[Width, Height];
+        findMatch = FindObjectOfType<FindMatch>();
         SetUp();
         Invoke("DestroyCheck", 0.2f);
     }
@@ -119,7 +121,6 @@ public class Board : MonoBehaviour
         isSpawn = false;
     }
 
-
     public void DestroyCheck() // 매칭 되는 거 부수기
     {
         for (int i = 0; i < Width; i++)
@@ -130,6 +131,7 @@ public class Board : MonoBehaviour
                 {
                     if (allDots[i, j].GetComponent<Dot>().isMatch == true)
                     {
+                        
                         allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
                         allDots[i, j] = null;
                     }

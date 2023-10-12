@@ -14,6 +14,7 @@ public class FindMatch : MonoBehaviour
     {
         board = FindObjectOfType<Board>();
         StartCoroutine(FindMatches());
+        
     }
 
     public void MatchFinder()
@@ -41,9 +42,7 @@ public class FindMatch : MonoBehaviour
                         {
                             if (left.GetComponent<Dot>().value == dots.value && right.GetComponent<Dot>().value == dots.value)
                             {
-                                left.GetComponent<Dot>().isMatch = true;
-                                right.GetComponent<Dot>().isMatch = true;
-                                dots.isMatch = true;
+                                AddListCheck(left, right, dots.gameObject);
                             }
                         }
                     }
@@ -55,9 +54,8 @@ public class FindMatch : MonoBehaviour
                         {
                             if (up.GetComponent<Dot>().value == dots.value && down.GetComponent<Dot>().value == dots.value)
                             {
-                                up.GetComponent<Dot>().isMatch = true;
-                                down.GetComponent<Dot>().isMatch = true;
-                                dots.isMatch = true;
+
+                                AddListCheck(up, down, dots.gameObject);
                             }
                         }
                     }
@@ -66,6 +64,27 @@ public class FindMatch : MonoBehaviour
         }
         yield return new WaitForSeconds(.4f);
         board.DestroyCheck();
+    }
+
+    void AddListCheck(GameObject leftup, GameObject rightdown, GameObject dots)
+    {
+        if(!match.Contains(leftup))
+        {
+            match.Add(leftup);
+            leftup.GetComponent<Dot>().isMatch = true;
+        }
+
+        if (!match.Contains(rightdown))
+        {
+            match.Add(leftup);
+            dots.GetComponent<Dot>().isMatch = true;
+        }
+
+        if (!match.Contains(dots))
+        {
+            match.Add(dots);
+            dots.GetComponent<Dot>().isMatch = true;
+        }
     }
 
     // Update is called once per frame
