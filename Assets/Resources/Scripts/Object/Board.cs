@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Enum;
-
+using Unity.Mathematics;
 
 public class Board : MonoBehaviour
 {
@@ -15,8 +15,10 @@ public class Board : MonoBehaviour
     public int offset;
     public GameObject[,] allTiles;
     public GameObject[,] allDots;
-
+    
     bool isSpawn;
+
+    public Dot currentDot;
 
     FindMatch findMatch;
     // Start is called before the first frame update
@@ -29,12 +31,7 @@ public class Board : MonoBehaviour
         Invoke("DestroyCheck", 0.2f);
     }
 
-    //void invokeUse()
-    //{
-    //    DestroyCheck();
-    //    CancelInvoke();
-    //}
-    //
+    #region DEFAULT
 
     void SetUp()
     {
@@ -49,13 +46,7 @@ public class Board : MonoBehaviour
                 tileSet.name = "( " + i + " , " + j + " )";
                 allTiles[i, j] = tileSet;
 
-                var dotSet = ObjectPoolManager.Instance.dotPool.Get();
-                dotSet.GetComponent<Dot>().row = j;
-                dotSet.GetComponent<Dot>().column = i;
-                dotSet.transform.position = tempVec2;
-                dotSet.transform.parent = this.transform;
-                dotSet.name = "( " + i + " , " + j + " )";
-                allDots[i, j] = dotSet;
+                mathCheck(i,j,tempVec2);
             }
         }
     }
@@ -79,6 +70,57 @@ public class Board : MonoBehaviour
             }
         }
         StartCoroutine(spawnDelay());
+    }
+
+    void mathCheck(int col, int row, Vector2 vec)
+    {
+        var dotSet = ObjectPoolManager.Instance.dotPool.Get();
+        Dot dotSetD = dotSet.GetComponent<Dot>();
+        dotSetD.row = row;
+        dotSetD.column = col;
+
+        if(row > 1)
+        {
+            Dot down = allDots[col, row - 1].GetComponent<Dot>();
+            Dot ddown = allDots[col, row - 2].GetComponent<Dot>();
+
+            if (down.value == dotSetD.value && ddown.value == dotSetD.value)
+            {
+                while (reSetCheck(dotSetD.value, down.value))
+                {
+                    dotSetD.value = UnityEngine.Random.Range(0, 5);
+                }
+            }
+        }
+
+        if(col > 1)
+        {
+            Dot left = allDots[col - 1, row].GetComponent<Dot>();
+            Dot lleft = allDots[col - 2, row].GetComponent<Dot>();
+
+            if (left.value == dotSetD.value && lleft.value == dotSetD.value)
+            {
+                Debug.Log(left.value + ", " + dotSetD.value);
+                while (reSetCheck(dotSetD.value, left.value))
+                {
+                    dotSetD.value = UnityEngine.Random.Range(0, 5);
+                    Debug.Log("µ¹¸² : " + dotSetD.value);
+                }
+            }
+        }
+        dotSet.transform.position = vec;
+        dotSet.transform.parent = this.transform;
+        dotSet.name = "( " + col + " , " + row + " )";
+        allDots[col, row] = dotSet;
+    }
+
+    bool reSetCheck(int dotvalue, int othervalue)
+    {
+        while (othervalue == dotvalue )
+        {
+            return true;
+        }
+        return false;
     }
 
     bool reSpawnCheck()
@@ -122,8 +164,18 @@ public class Board : MonoBehaviour
         isSpawn = false;
     }
 
+    #endregion
+
     public void DestroyCheck() // ¸ÅÄª µÇ´Â °Å ºÎ¼ö±â
     {
+        if(findMatch.match.Count == 4)
+        {
+            Debug.Log(findMatch.match.Count);
+            Debug.Log("ÆøÅº¸¸µé±â");
+            findMatch.checkBomb();
+            findMatch.match.Clear(); 
+        }
+
         for (int i = 0; i < Width; i++)
         {
             for (int j = 0; j < Height; j++)
@@ -132,7 +184,7 @@ public class Board : MonoBehaviour
                 {
                     if (allDots[i, j].GetComponent<Dot>().isMatch == true)
                     {
-                        
+                        findMatch.match.Remove(allDots[i, j]);
                         allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
                         allDots[i, j] = null;
                     }

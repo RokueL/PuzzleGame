@@ -6,7 +6,10 @@ using UnityEngine;
 public class FindMatch : MonoBehaviour
 {
     private Board board;
+    
     public List<GameObject> match = new List<GameObject>();
+    public bool isUpdown;
+    public bool isLeftRight;
 
 
     // Start is called before the first frame update
@@ -42,7 +45,13 @@ public class FindMatch : MonoBehaviour
                         {
                             if (left.GetComponent<Dot>().value == dots.value && right.GetComponent<Dot>().value == dots.value)
                             {
+                                //left.GetComponent<Dot>().isMatch = true;
+                                //right.GetComponent<Dot>().isMatch = true;
+                                //dots.isMatch = true;
+                                //Debug.Log(left.name + ", " + right.name + ", " + dots.gameObject.name);
                                 AddListCheck(left, right, dots.gameObject);
+                                isLeftRight = true;
+                                isUpdown = false;
                             }
                         }
                     }
@@ -54,13 +63,23 @@ public class FindMatch : MonoBehaviour
                         {
                             if (up.GetComponent<Dot>().value == dots.value && down.GetComponent<Dot>().value == dots.value)
                             {
-
+                                //up.GetComponent<Dot>().isMatch = true;
+                                //down.GetComponent<Dot>().isMatch = true;
+                                //dots.isMatch = true;
+                                //Debug.Log(up.name + ", " + down.name + ", " + dots.gameObject.name);
                                 AddListCheck(up, down, dots.gameObject);
+                                isUpdown = true;
+                                isLeftRight = false;
                             }
                         }
                     }
                 }
             }
+        }
+        //Debug.Log("match 최대 수 : " + match.Count);
+        for (int i = 0; i < match.Count; i++)
+        {
+            //Debug.Log($"match{i}의 이름 : " + match[i].name);
         }
         yield return new WaitForSeconds(.4f);
         board.DestroyCheck();
@@ -68,22 +87,43 @@ public class FindMatch : MonoBehaviour
 
     void AddListCheck(GameObject leftup, GameObject rightdown, GameObject dots)
     {
+
         if(!match.Contains(leftup))
         {
             match.Add(leftup);
-            leftup.GetComponent<Dot>().isMatch = true;
         }
+        leftup.GetComponent<Dot>().isMatch = true;
 
         if (!match.Contains(rightdown))
         {
-            match.Add(leftup);
-            dots.GetComponent<Dot>().isMatch = true;
+            match.Add(rightdown);
         }
+        rightdown.GetComponent<Dot>().isMatch = true;
 
         if (!match.Contains(dots))
         {
             match.Add(dots);
-            dots.GetComponent<Dot>().isMatch = true;
+        }
+        dots.GetComponent<Dot>().isMatch = true;
+    }
+
+    public void checkBomb()
+    {
+        if(board.currentDot != null)
+        {
+            if (board.currentDot.isMatch)
+            {
+                if (isLeftRight)
+                {
+                    board.currentDot.changeColumnbomb();
+                    isLeftRight = false;
+                }
+                else if(isUpdown)
+                {
+                    board.currentDot.changeRowbomb();
+                    isUpdown = false;
+                }
+            }
         }
     }
 

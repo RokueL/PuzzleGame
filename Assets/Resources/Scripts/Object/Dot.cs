@@ -12,6 +12,7 @@ public class Dot : MonoBehaviour
     Vector2 tempPosition;
 
     float swipeAngle;
+    float swipeSpeed = 0.2f;
 
     public int value;
     public int column;
@@ -19,6 +20,7 @@ public class Dot : MonoBehaviour
     public int targetX, targetY;
     private int exrow, excol;
 
+    public bool isRowBomb;
     public bool isMatch;
 
     Board board;
@@ -49,6 +51,7 @@ public class Dot : MonoBehaviour
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * Mathf.Rad2Deg;
         Debug.Log(swipeAngle);
         MoveDots();
+        board.currentDot = this;
         board.state = Enum.Enum.State.Wait;
     }
     void MoveDots()
@@ -105,6 +108,8 @@ public class Dot : MonoBehaviour
                 row = exrow;
                 column = excol;
                 yield return new WaitForSeconds(0.5f);
+                board.currentDot = null;
+                findMatch.match.Clear();
                 board.state = Enum.Enum.State.Move;
             }
             else {
@@ -115,7 +120,18 @@ public class Dot : MonoBehaviour
         }
     }
 
-
+    public void changeRowbomb()
+    {
+        spriteRenderer.sprite = spAtlas.GetSprite("RowBombDot");
+        isMatch = false;
+        isRowBomb = true;
+    }
+    public void changeColumnbomb()
+    {
+        spriteRenderer.sprite = spAtlas.GetSprite("ColBombDot");
+        isMatch = false;
+        isRowBomb = true;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -136,23 +152,26 @@ public class Dot : MonoBehaviour
 
     public void colorCheck()
     {
-        switch (value)
+        if (!isRowBomb)
         {
-            case 0:
-                spriteRenderer.sprite = spAtlas.GetSprite("RedDot");
-                break;
-            case 1:
-                spriteRenderer.sprite = spAtlas.GetSprite("YellowDot");
-                break;
-            case 2:
-                spriteRenderer.sprite = spAtlas.GetSprite("GreenDot");  
-                break;
-            case 3:
-                spriteRenderer.sprite = spAtlas.GetSprite("BlueDot");
-                break;
-            case 4:
-                spriteRenderer.sprite = spAtlas.GetSprite("PurpleDot");
-                break;
+            switch (value)
+            {
+                case 0:
+                    spriteRenderer.sprite = spAtlas.GetSprite("RedDot");
+                    break;
+                case 1:
+                    spriteRenderer.sprite = spAtlas.GetSprite("YellowDot");
+                    break;
+                case 2:
+                    spriteRenderer.sprite = spAtlas.GetSprite("GreenDot");
+                    break;
+                case 3:
+                    spriteRenderer.sprite = spAtlas.GetSprite("BlueDot");
+                    break;
+                case 4:
+                    spriteRenderer.sprite = spAtlas.GetSprite("PurpleDot");
+                    break;
+            }
         }
     }
 
@@ -180,7 +199,7 @@ public class Dot : MonoBehaviour
         if(x > 0.1f) //제자리만 아니면 이동한다고요~
         {
             tempPosition = new Vector2(targetX, transform.position.y); //바뀐 column위치로 저장~
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f); // 천천히 이동하도록 해요
+            transform.position = Vector2.Lerp(transform.position, tempPosition, swipeSpeed); // 천천히 이동하도록 해요
             if (board.allDots[column,row] != this.gameObject) // 값은 옮겼지만 오브젝트가 매칭이 안되면 새로 등록시킨다.
             {
                 board.allDots[column, row] = this.gameObject;
@@ -197,7 +216,7 @@ public class Dot : MonoBehaviour
         if (y > 0.1f) //y도 같아요
         {
             tempPosition = new Vector2(transform.position.x, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, swipeSpeed);
             if (board.allDots[column, row] != this.gameObject)
             {
                 board.allDots[column, row] = this.gameObject;
