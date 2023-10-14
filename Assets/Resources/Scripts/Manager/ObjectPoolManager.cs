@@ -78,8 +78,13 @@ public class ObjectPoolManager : MonoBehaviour
     }
     private void OnTakeFromPool2(GameObject poolGo2)
     {
-        poolGo2.GetComponent<Dot>().value = Random.Range(0, 5);
-        poolGo2.GetComponent<Dot>().isMatch = false;
+        var poolgo2 = poolGo2.GetComponent<Dot>();
+
+        poolgo2.value = Random.Range(0, 5);
+        poolgo2.isMatch = false;
+        poolgo2.isBomb = false;
+        poolgo2.bombType = Enum.Enum.Bomb.None;
+
         poolGo2.SetActive(true);
     }
 

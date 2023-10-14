@@ -166,6 +166,28 @@ public class Board : MonoBehaviour
 
     #endregion
 
+    void bombCheck(int col, int row)
+    {
+        findMatch.bombMatch.Clear();
+        var dotBomb = allDots[col, row].GetComponent<Dot>().bombType;
+        if (dotBomb == Enum.Enum.Bomb.columnBomb)
+        {
+            Debug.Log("°¡·ÎÆøÅº");
+            findMatch.bombAddListColumn(col, row);
+        }
+        else if (dotBomb == Enum.Enum.Bomb.rowBomb)
+        {
+            Debug.Log("¼¼·ÎÆøÅº");
+            findMatch.bombAddListRow(col, row);
+        }
+        else if (dotBomb == Enum.Enum.Bomb.areaBomb)
+        {
+        }
+        else
+        {
+        }
+    }
+
     public void DestroyCheck() // ¸ÅÄª µÇ´Â °Å ºÎ¼ö±â
     {
         if(findMatch.match.Count == 4)
@@ -173,8 +195,9 @@ public class Board : MonoBehaviour
             Debug.Log(findMatch.match.Count);
             Debug.Log("ÆøÅº¸¸µé±â");
             findMatch.checkBomb();
-            findMatch.match.Clear(); 
         }
+        findMatch.match.Clear();
+        findMatch.bombMatch.Clear();
 
         for (int i = 0; i < Width; i++)
         {
@@ -182,8 +205,13 @@ public class Board : MonoBehaviour
             {
                 if (allDots[i, j] != null)
                 {
-                    if (allDots[i, j].GetComponent<Dot>().isMatch == true)
+                    var alldot = allDots[i, j].GetComponent<Dot>();
+                    if (alldot.isMatch == true)
                     {
+                        if(alldot.isBomb == true)
+                        {
+                            bombCheck(i,j);
+                        }
                         findMatch.match.Remove(allDots[i, j]);
                         allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
                         allDots[i, j] = null;
@@ -191,6 +219,8 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        findMatch.bombMatch.Clear();
+        findMatch.match.Clear();
         StartCoroutine(DownCheck());
     }
 

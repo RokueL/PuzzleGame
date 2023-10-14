@@ -8,6 +8,8 @@ public class FindMatch : MonoBehaviour
     private Board board;
     
     public List<GameObject> match = new List<GameObject>();
+    public List<GameObject> bombMatch = new List<GameObject>();
+    
     public bool isUpdown;
     public bool isLeftRight;
 
@@ -85,6 +87,38 @@ public class FindMatch : MonoBehaviour
         board.DestroyCheck();
     }
 
+    public void bombAddListColumn(int col, int row)
+    {
+        var dots = board.allDots[col, row];
+        if (dots != null)
+        {
+            for (int i = 0; i < board.Width; i++)
+            {
+                if (!bombMatch.Contains(board.allDots[i, row]))
+                {
+                    bombMatch.Add(board.allDots[i, row]);
+                }
+                board.allDots[i, row].GetComponent<Dot>().isMatch = true;
+            }
+        }
+    }
+
+    public void bombAddListRow(int col, int row)
+    {
+        var dots = board.allDots[col, row];
+        if (dots != null)
+        {
+            for (int i = 0; i < board.Height; i++)
+            {
+                if (!bombMatch.Contains(board.allDots[col, i]))
+                {
+                    bombMatch.Add(board.allDots[col, i]);
+                }
+                board.allDots[col, i].GetComponent<Dot>().isMatch = true;
+            }
+        }
+    }
+
     void AddListCheck(GameObject leftup, GameObject rightdown, GameObject dots)
     {
 
@@ -109,18 +143,21 @@ public class FindMatch : MonoBehaviour
 
     public void checkBomb()
     {
-        if(board.currentDot != null)
+
+        if (board.currentDot != null)
         {
             if (board.currentDot.isMatch)
             {
                 if (isLeftRight)
                 {
                     board.currentDot.changeColumnbomb();
+                    board.currentDot.bombType = Enum.Enum.Bomb.columnBomb;
                     isLeftRight = false;
                 }
-                else if(isUpdown)
+                else if (isUpdown)
                 {
                     board.currentDot.changeRowbomb();
+                    board.currentDot.bombType = Enum.Enum.Bomb.rowBomb;
                     isUpdown = false;
                 }
             }

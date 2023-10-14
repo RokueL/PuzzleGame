@@ -11,5 +11,12 @@ namespace Enum
             Move,
             Wait
         }
+        public enum Bomb
+        {
+            None,
+            columnBomb,
+            rowBomb,
+            areaBomb
+        }
     }
 }

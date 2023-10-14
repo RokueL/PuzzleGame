@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.U2D;
+using Enum;
 
 public class Dot : MonoBehaviour
 {
+    public Enum.Enum.Bomb bombType = Enum.Enum.Bomb.None;
 
     Vector2 firstTouchPosition;
     Vector2 finalTouchPosition;
@@ -20,7 +22,7 @@ public class Dot : MonoBehaviour
     public int targetX, targetY;
     private int exrow, excol;
 
-    public bool isRowBomb;
+    public bool isBomb;
     public bool isMatch;
 
     Board board;
@@ -107,9 +109,13 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().column = column;
                 row = exrow;
                 column = excol;
+
                 yield return new WaitForSeconds(0.5f);
                 board.currentDot = null;
+
                 findMatch.match.Clear();
+                findMatch.bombMatch.Clear();
+
                 board.state = Enum.Enum.State.Move;
             }
             else {
@@ -122,15 +128,18 @@ public class Dot : MonoBehaviour
 
     public void changeRowbomb()
     {
+
+        Debug.Log("¼¼·Î¤ÐÆøÅºº¯Çü¿Ï·á");
         spriteRenderer.sprite = spAtlas.GetSprite("RowBombDot");
         isMatch = false;
-        isRowBomb = true;
+        isBomb = true;
     }
     public void changeColumnbomb()
     {
+        Debug.Log("°¡·ÎÆøÅºº¯Çü¿Ï·á");
         spriteRenderer.sprite = spAtlas.GetSprite("ColBombDot");
         isMatch = false;
-        isRowBomb = true;
+        isBomb = true;
     }
 
     // Start is called before the first frame update
@@ -152,7 +161,7 @@ public class Dot : MonoBehaviour
 
     public void colorCheck()
     {
-        if (!isRowBomb)
+        if (!isBomb)
         {
             switch (value)
             {
