@@ -52,8 +52,8 @@ public class Dot : MonoBehaviour
     {
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * Mathf.Rad2Deg;
         Debug.Log(swipeAngle);
-        MoveDots();
         board.currentDot = this;
+        MoveDots();
         board.state = Enum.Enum.State.Wait;
     }
     void MoveDots()
