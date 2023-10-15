@@ -39,6 +39,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: be1cffeb043dd6943b09128f4df9f5d0, type: 3}
     - {fileID: 2800000, guid: ebaff70463cbf7249905f84211a5c2c6, type: 3}
     - {fileID: 2800000, guid: 5cbed27532d931247812fb52a6f732cc, type: 3}
+    - {fileID: 2800000, guid: 3a36103e45f23ce458aa1c2a5850adb3, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -49,6 +50,7 @@ SpriteAtlas:
     - 2e936e854cfcb0149aac1bb70c2c9b18: 21300000
     - 0bcddadbf351aec45b1df7e28771613f: 21300000
     - be1cffeb043dd6943b09128f4df9f5d0: 21300000
+    - 3a36103e45f23ce458aa1c2a5850adb3: 21300000
     - 879043be4798e8d41b437351747840b6: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -58,6 +60,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2e936e854cfcb0149aac1bb70c2c9b18, type: 3}
   - {fileID: 21300000, guid: 0bcddadbf351aec45b1df7e28771613f, type: 3}
   - {fileID: 21300000, guid: be1cffeb043dd6943b09128f4df9f5d0, type: 3}
+  - {fileID: 21300000, guid: 3a36103e45f23ce458aa1c2a5850adb3, type: 3}
   - {fileID: 21300000, guid: 879043be4798e8d41b437351747840b6, type: 3}
   m_PackedSpriteNamesToIndex:
   - ColBombDot
@@ -66,6 +69,7 @@ SpriteAtlas:
   - RedDot
   - BlueDot
   - PurpleDot
+  - AreaBombDot
   - YellowDot
   m_RenderDataMap: {}
   m_Tag: dotAtlas

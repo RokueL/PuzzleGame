@@ -762,6 +762,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   match: []
+  bombMatch: []
+  isUpdown: 0
+  isLeftRight: 0
 --- !u!1001 &2591910133913476377
 PrefabInstance:
   m_ObjectHideFlags: 0

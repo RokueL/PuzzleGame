@@ -36,8 +36,15 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(board.state == Enum.Enum.State.Move)
+        if (board.state == Enum.Enum.State.Move)
+        {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (isBomb)
+            {
+                isMatch = true;
+                board.DestroyCheck();
+            }
+        }
         //Debug.Log(firstTouchPosition);
     }
     private void OnMouseUp()
@@ -119,6 +126,10 @@ public class Dot : MonoBehaviour
                 board.state = Enum.Enum.State.Move;
             }
             else {
+                if(isBomb)
+                {
+                    isMatch = true;
+                }
                 board.DestroyCheck();
             }
 
@@ -126,10 +137,16 @@ public class Dot : MonoBehaviour
         }
     }
 
+    public void changeAreabomb()
+    {
+        Debug.Log("¹üÀ§ÆøÅºº¯Çü¿Ï·á");
+        spriteRenderer.sprite = spAtlas.GetSprite("AreaBombDot");
+        isMatch = false;
+        isBomb = true;
+    }
     public void changeRowbomb()
     {
-
-        Debug.Log("¼¼·Î¤ÐÆøÅºº¯Çü¿Ï·á");
+        Debug.Log("¼¼·ÎÆøÅºº¯Çü¿Ï·á");
         spriteRenderer.sprite = spAtlas.GetSprite("RowBombDot");
         isMatch = false;
         isBomb = true;
@@ -184,10 +201,13 @@ public class Dot : MonoBehaviour
         }
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
         colorCheck();
+
         targetX = column;
         targetY = row;
 

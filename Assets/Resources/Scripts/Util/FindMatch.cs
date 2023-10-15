@@ -30,6 +30,7 @@ public class FindMatch : MonoBehaviour
     IEnumerator FindMatches()
     {
         yield return new WaitForSeconds(.1f);
+        isLeftRight = false; isUpdown = false;
         for (int i = 0; i < board.Width; i++)
         {
             for (int j = 0; j < board.Height; j++)
@@ -98,7 +99,10 @@ public class FindMatch : MonoBehaviour
                 {
                     bombMatch.Add(board.allDots[i, row]);
                 }
-                board.allDots[i, row].GetComponent<Dot>().isMatch = true;
+                if (board.allDots[i, row] != null)
+                {
+                    board.allDots[i, row].GetComponent<Dot>().isMatch = true;
+                }
             }
         }
     }
@@ -114,7 +118,57 @@ public class FindMatch : MonoBehaviour
                 {
                     bombMatch.Add(board.allDots[col, i]);
                 }
-                board.allDots[col, i].GetComponent<Dot>().isMatch = true;
+                if (board.allDots[col, i] != null)
+                {
+                    board.allDots[col, i].GetComponent<Dot>().isMatch = true;
+                }
+            }
+        }
+    }
+
+    public void bombAddListArea(int col, int row)
+    {
+        var dots = board.allDots[col, row];
+        int c = 0;
+        int r = 0;
+        if (dots != null)
+        {
+            for (int i = -2; i <= 2; i++)
+            {
+                for (int j = -2; j <= 2; j++)
+                {
+                    if(col + i >= board.Width)
+                    {
+                        c = board.Width - 1;
+                    }
+                    else if(row + j >= board.Height)
+                    {
+                        r = board.Height - 1;
+                    }
+                    else if(col + i < 0)
+                    {
+                        c = 0;
+                    }
+                    else if(row + j < 0)
+                    {
+                        r = 0;
+                    }
+                    else
+                    {
+                        c = col + i;
+                        r = row + j;
+                    }
+
+                    if (!bombMatch.Contains(board.allDots[c, r]))
+                    {
+                        bombMatch.Add(board.allDots[c, r]);
+                    }
+                    if (board.allDots[c, r] != null)
+                    {
+                        board.allDots[c, r].GetComponent<Dot>().isMatch = true;
+
+                    }
+                }
             }
         }
     }
@@ -141,12 +195,12 @@ public class FindMatch : MonoBehaviour
         dots.GetComponent<Dot>().isMatch = true;
     }
 
-    public void checkBomb()
+    public void checkColRowBomb()
     {
 
         if (board.currentDot != null)
         {
-            if (board.currentDot.isMatch)
+            if (board.isMakeBomb)
             {
                 if (isLeftRight)
                 {
@@ -163,6 +217,21 @@ public class FindMatch : MonoBehaviour
             }
         }
     }
+    public void checkAreaBomb()
+    {
+
+        if (board.currentDot != null)
+        {
+            if (board.currentDot.isMatch)
+            {
+                board.currentDot.changeAreabomb();
+                board.currentDot.bombType = Enum.Enum.Bomb.areaBomb;
+                isLeftRight = false;
+                isUpdown = false;
+            }
+        }
+    }
+
 
     // Update is called once per frame
     void Update()

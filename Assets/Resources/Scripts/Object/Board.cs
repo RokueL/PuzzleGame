@@ -10,6 +10,7 @@ public class Board : MonoBehaviour
     public Enum.Enum.State state = Enum.Enum.State.Move;
 
     int downCount;
+    int endcheck;
     public int Width;
     public int Height;
     public int offset;
@@ -17,10 +18,12 @@ public class Board : MonoBehaviour
     public GameObject[,] allDots;
     
     bool isSpawn;
+    public bool isMakeBomb;
 
     public Dot currentDot;
 
     FindMatch findMatch;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -143,6 +146,7 @@ public class Board : MonoBehaviour
 
     IEnumerator SpawnDots()
     {
+        state = Enum.Enum.State.Wait;
         if (!isSpawn)
         {
             SpawnDot();
@@ -166,7 +170,7 @@ public class Board : MonoBehaviour
 
     #endregion
 
-    void bombCheck(int col, int row)
+    public void bombCheck(int col, int row)
     {
         findMatch.bombMatch.Clear();
         var dotBomb = allDots[col, row].GetComponent<Dot>().bombType;
@@ -182,22 +186,34 @@ public class Board : MonoBehaviour
         }
         else if (dotBomb == Enum.Enum.Bomb.areaBomb)
         {
+            Debug.Log("범위폭탄");
+            findMatch.bombAddListArea(col, row);
         }
         else
         {
         }
+        findMatch.bombMatch.Clear();
     }
+
 
     public void DestroyCheck() // 매칭 되는 거 부수기
     {
-        if(findMatch.match.Count == 4)
+        if (findMatch.match.Count == 4 || findMatch.match.Count == 7)
         {
             Debug.Log(findMatch.match.Count);
             Debug.Log("폭탄만들기");
-            findMatch.checkBomb();
+            isMakeBomb = true;
+            findMatch.checkColRowBomb();
+            isMakeBomb = false;
         }
-        findMatch.match.Clear();
-        findMatch.bombMatch.Clear();
+        if (findMatch.match.Count == 5)
+        {
+            Debug.Log(findMatch.match.Count);
+            Debug.Log("폭탄만들기");
+            isMakeBomb = true;
+            findMatch.checkAreaBomb();
+            isMakeBomb = false;
+        }
 
         for (int i = 0; i < Width; i++)
         {
@@ -208,9 +224,9 @@ public class Board : MonoBehaviour
                     var alldot = allDots[i, j].GetComponent<Dot>();
                     if (alldot.isMatch == true)
                     {
-                        if(alldot.isBomb == true)
+                        if (alldot.isBomb == true)
                         {
-                            bombCheck(i,j);
+                            bombCheck(i, j);
                         }
                         findMatch.match.Remove(allDots[i, j]);
                         allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
@@ -219,13 +235,14 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        findMatch.bombMatch.Clear();
         findMatch.match.Clear();
         StartCoroutine(DownCheck());
     }
 
-    IEnumerator DownCheck() // 부수고 난 다음 라인 밑으로 내리기
+
+    public IEnumerator DownCheck() // 부수고 난 다음 라인 밑으로 내리기
     {
+        state = Enum.Enum.State.Wait;
         downCount = 0;
         for (int i = 0; i < Width; i++)
         {
@@ -238,7 +255,7 @@ public class Board : MonoBehaviour
                 else if (downCount > 0)
                 {
                     allDots[i, j].GetComponent<Dot>().row -= downCount;
-                    allDots[i, j] = null; 
+                    allDots[i, j] = null;
                 }
             }
             downCount = 0;
