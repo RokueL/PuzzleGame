@@ -146,6 +146,7 @@ public class Board : MonoBehaviour
 
     IEnumerator SpawnDots()
     {
+        
         state = Enum.Enum.State.Wait;
         if (!isSpawn)
         {
@@ -215,39 +216,43 @@ public class Board : MonoBehaviour
             findMatch.checkAreaBomb();
             isMakeBomb = false;
         }
-        findMatch.match.Clear();
     }
 
     public void DestroyCheck() // 매칭 되는 거 부수기
     {
-        MakeBomb();
         for (int i = 0; i < Width; i++)
         {
             for (int j = 0; j < Height; j++)
             {
                 if (allDots[i, j] != null)
                 {
-                    var alldot = allDots[i, j].GetComponent<Dot>();
-                    if (alldot.isMatch == true)
-                    {
-                        if (alldot.isBomb == true)
-                        {
-                            bombCheck(i, j);
-                        }
-                        if (allDots[i, j] != null)
-                        {
-                            findMatch.match.Remove(allDots[i, j]);
-                            allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
-                            allDots[i, j] = null;
-                        }
-                    }
+                    DestroyCheckOn(i, j);
                 }
             }
         }
+        findMatch.match.Clear();
         findMatch.bombMatch.Clear();
         StartCoroutine(DownCheck());
     }
 
+    void DestroyCheckOn(int col, int row)
+    {
+        var alldot = allDots[col, row].GetComponent<Dot>();
+        if (alldot.isMatch == true)
+        {
+            MakeBomb();
+            if (alldot.isBomb == true)
+            {
+                bombCheck(col, row);
+            }
+            if (allDots[col, row] != null)
+            {
+                findMatch.match.Remove(allDots[col, row]);
+                alldot.dottPool.Release(allDots[col, row]);
+                allDots[col, row] = null;
+            }
+        }
+    }
     
 
     public IEnumerator DownCheck() // 부수고 난 다음 라인 밑으로 내리기
@@ -270,7 +275,7 @@ public class Board : MonoBehaviour
             }
             downCount = 0;
         }
-        //findMatch.MatchFinder();
+        findMatch.downMatch();
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(SpawnDots());
     }
