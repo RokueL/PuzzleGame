@@ -158,6 +158,9 @@ public class Board : MonoBehaviour
                 DestroyCheck();
             }
         }
+
+        currentDot = null;
+        yield return new WaitForSeconds(.4f);
         state = Enum.Enum.State.Move;
     }
 
@@ -192,11 +195,9 @@ public class Board : MonoBehaviour
         else
         {
         }
-        findMatch.bombMatch.Clear();
     }
 
-
-    public void DestroyCheck() // 매칭 되는 거 부수기
+    void MakeBomb()
     {
         if (findMatch.match.Count == 4 || findMatch.match.Count == 7)
         {
@@ -214,7 +215,12 @@ public class Board : MonoBehaviour
             findMatch.checkAreaBomb();
             isMakeBomb = false;
         }
+        findMatch.match.Clear();
+    }
 
+    public void DestroyCheck() // 매칭 되는 거 부수기
+    {
+        MakeBomb();
         for (int i = 0; i < Width; i++)
         {
             for (int j = 0; j < Height; j++)
@@ -228,17 +234,21 @@ public class Board : MonoBehaviour
                         {
                             bombCheck(i, j);
                         }
-                        findMatch.match.Remove(allDots[i, j]);
-                        allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
-                        allDots[i, j] = null;
+                        if (allDots[i, j] != null)
+                        {
+                            findMatch.match.Remove(allDots[i, j]);
+                            allDots[i, j].GetComponent<Dot>().dottPool.Release(allDots[i, j]);
+                            allDots[i, j] = null;
+                        }
                     }
                 }
             }
         }
-        findMatch.match.Clear();
+        findMatch.bombMatch.Clear();
         StartCoroutine(DownCheck());
     }
 
+    
 
     public IEnumerator DownCheck() // 부수고 난 다음 라인 밑으로 내리기
     {
@@ -260,6 +270,7 @@ public class Board : MonoBehaviour
             }
             downCount = 0;
         }
+        //findMatch.MatchFinder();
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(SpawnDots());
     }
