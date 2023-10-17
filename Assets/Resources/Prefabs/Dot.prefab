@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 3da71674afadd0341991a65146365b2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -98,7 +98,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c676e18882fe501439c162a1293aaa2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombType: 0
   value: 0
+  column: 0
+  row: 0
+  targetX: 0
+  targetY: 0
+  isBomb: 0
+  isRow: 0
+  isCol: 0
+  isArea: 0
+  isMatch: 0
   spAtlas: {fileID: 4343727234628468602, guid: 890c5ebb121235845a08879d8d859ccf, type: 2}
 --- !u!58 &6797525708671107066
 CircleCollider2D:

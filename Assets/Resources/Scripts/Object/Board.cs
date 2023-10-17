@@ -32,6 +32,7 @@ public class Board : MonoBehaviour
         allDots = new GameObject[Width, Height];
         findMatch = FindObjectOfType<FindMatch>();
         SetUp();
+        CheckdestroyDelay();
     }
 
     public void CheckdestroyDelay()
@@ -86,11 +87,42 @@ public class Board : MonoBehaviour
                 {
                     BombExplosion(col, row);
                 }
-                    findMatch.match.Remove(allDots[col, row]);
-                    alldot.dottPool.Release(allDots[col, row]);
-                    allDots[col, row] = null;
-                    destroyCount++;
+                makeEffect(alldot.value, col, row);
+                findMatch.match.Remove(allDots[col, row]);
+                alldot.dottPool.Release(allDots[col, row]);
+                allDots[col, row] = null;
+                destroyCount++;
             }
+        }
+    }
+
+    void makeEffect(int value, int col, int row)
+    {
+        var obj = ObjectPoolManager.Instance;
+        Vector2 tempVec = new Vector2(col, row);
+        switch (value)
+        {
+            case 0:
+                var eff0 = obj.E_RedPool.Get();
+                eff0.transform.position = tempVec;
+                break; 
+            case 1:
+                var eff1 = obj.E_YellowPool.Get();
+                eff1.transform.position = tempVec;
+                break;
+            case 2:
+                var eff2 = obj.E_GreenPool.Get();
+                eff2.transform.position = tempVec;
+                break;
+            case 3:
+                var eff3 = obj.E_BluePool.Get();
+                eff3.transform.position = tempVec;
+                break;
+            case 4:
+                var eff4 = obj.E_PurplePool.Get();
+                eff4.transform.position = tempVec;
+                break;
+
         }
     }
 
@@ -143,7 +175,7 @@ public class Board : MonoBehaviour
                 downCount = 0;
             }
         }
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.4f);
         state = Enum.Enum.State.Down;
         findMatch.MatchDown();
         yield return new WaitForSeconds(.4f);

@@ -88,7 +88,7 @@ public class FindMatch : MonoBehaviour
 
     IEnumerator downCheck()
     {
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.6f); // 내려온 후 매칭 딜레이
         isLeftRight = false; isUpdown = false;
         for (int i = 0; i < board.Width; i++)
         {

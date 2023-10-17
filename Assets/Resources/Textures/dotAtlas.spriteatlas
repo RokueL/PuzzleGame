@@ -32,45 +32,77 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 2800000, guid: 0bcddadbf351aec45b1df7e28771613f, type: 3}
-    - {fileID: 2800000, guid: c34b37340ff586047b007a2bb2ed00bb, type: 3}
-    - {fileID: 2800000, guid: 2e936e854cfcb0149aac1bb70c2c9b18, type: 3}
-    - {fileID: 2800000, guid: 879043be4798e8d41b437351747840b6, type: 3}
-    - {fileID: 2800000, guid: be1cffeb043dd6943b09128f4df9f5d0, type: 3}
-    - {fileID: 2800000, guid: ebaff70463cbf7249905f84211a5c2c6, type: 3}
-    - {fileID: 2800000, guid: 5cbed27532d931247812fb52a6f732cc, type: 3}
-    - {fileID: 2800000, guid: 3a36103e45f23ce458aa1c2a5850adb3, type: 3}
+    - {fileID: 2800000, guid: ef27da798f1986840a5cabbba5c0b69e, type: 3}
+    - {fileID: 2800000, guid: 5eec667b6713c104c92951dc655abea3, type: 3}
+    - {fileID: 2800000, guid: dd802ae63a32f4444bcab4cd782603af, type: 3}
+    - {fileID: 2800000, guid: e7fb3674b0c9e59478d69cabacaf406c, type: 3}
+    - {fileID: 2800000, guid: 1c79e1095a66d8047945dd4de0cb7fd9, type: 3}
+    - {fileID: 2800000, guid: 0228630d07e4eb74ab5180f584ba2bf5, type: 3}
+    - {fileID: 2800000, guid: e948fe97e98c41949a25a3facc31b90d, type: 3}
+    - {fileID: 2800000, guid: f08f475e2dd3cae4986ad0f0b5e8e8d8, type: 3}
+    - {fileID: 2800000, guid: 11abe39096cdba94f9d7d09525cc6826, type: 3}
+    - {fileID: 2800000, guid: 910fb91b0ddde5347902c4f3b77e145a, type: 3}
+    - {fileID: 2800000, guid: 990fbf92d3af61348bda60d89131b776, type: 3}
+    - {fileID: 2800000, guid: 223fc5f95b08cd84ca674ccdf8bf116b, type: 3}
+    - {fileID: 2800000, guid: 46a96ec851163314792708d9c76d5007, type: 3}
+    - {fileID: 2800000, guid: 3c97fea172111ee45ae00b6c5195efcc, type: 3}
+    - {fileID: 2800000, guid: 4a720e7dc4f3175499fa95f64aa6bb7f, type: 3}
+    - {fileID: 2800000, guid: e02a7768f328f1141a559a94ec21869b, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - ebaff70463cbf7249905f84211a5c2c6: 21300000
-    - c34b37340ff586047b007a2bb2ed00bb: 21300000
-    - 5cbed27532d931247812fb52a6f732cc: 21300000
-    - 2e936e854cfcb0149aac1bb70c2c9b18: 21300000
-    - 0bcddadbf351aec45b1df7e28771613f: 21300000
-    - be1cffeb043dd6943b09128f4df9f5d0: 21300000
-    - 3a36103e45f23ce458aa1c2a5850adb3: 21300000
-    - 879043be4798e8d41b437351747840b6: 21300000
+    - 11abe39096cdba94f9d7d09525cc6826: 21300000
+    - 3c97fea172111ee45ae00b6c5195efcc: 21300000
+    - 990fbf92d3af61348bda60d89131b776: 21300000
+    - e7fb3674b0c9e59478d69cabacaf406c: 21300000
+    - dd802ae63a32f4444bcab4cd782603af: 21300000
+    - e948fe97e98c41949a25a3facc31b90d: 21300000
+    - e02a7768f328f1141a559a94ec21869b: 21300000
+    - 46a96ec851163314792708d9c76d5007: 21300000
+    - 1c79e1095a66d8047945dd4de0cb7fd9: 21300000
+    - ef27da798f1986840a5cabbba5c0b69e: 21300000
+    - 223fc5f95b08cd84ca674ccdf8bf116b: 21300000
+    - 910fb91b0ddde5347902c4f3b77e145a: 21300000
+    - 5eec667b6713c104c92951dc655abea3: 21300000
+    - 0228630d07e4eb74ab5180f584ba2bf5: 21300000
+    - 4a720e7dc4f3175499fa95f64aa6bb7f: 21300000
+    - f08f475e2dd3cae4986ad0f0b5e8e8d8: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: ebaff70463cbf7249905f84211a5c2c6, type: 3}
-  - {fileID: 21300000, guid: c34b37340ff586047b007a2bb2ed00bb, type: 3}
-  - {fileID: 21300000, guid: 5cbed27532d931247812fb52a6f732cc, type: 3}
-  - {fileID: 21300000, guid: 2e936e854cfcb0149aac1bb70c2c9b18, type: 3}
-  - {fileID: 21300000, guid: 0bcddadbf351aec45b1df7e28771613f, type: 3}
-  - {fileID: 21300000, guid: be1cffeb043dd6943b09128f4df9f5d0, type: 3}
-  - {fileID: 21300000, guid: 3a36103e45f23ce458aa1c2a5850adb3, type: 3}
-  - {fileID: 21300000, guid: 879043be4798e8d41b437351747840b6, type: 3}
+  - {fileID: 21300000, guid: 11abe39096cdba94f9d7d09525cc6826, type: 3}
+  - {fileID: 21300000, guid: 3c97fea172111ee45ae00b6c5195efcc, type: 3}
+  - {fileID: 21300000, guid: 990fbf92d3af61348bda60d89131b776, type: 3}
+  - {fileID: 21300000, guid: e7fb3674b0c9e59478d69cabacaf406c, type: 3}
+  - {fileID: 21300000, guid: dd802ae63a32f4444bcab4cd782603af, type: 3}
+  - {fileID: 21300000, guid: e948fe97e98c41949a25a3facc31b90d, type: 3}
+  - {fileID: 21300000, guid: e02a7768f328f1141a559a94ec21869b, type: 3}
+  - {fileID: 21300000, guid: 46a96ec851163314792708d9c76d5007, type: 3}
+  - {fileID: 21300000, guid: 1c79e1095a66d8047945dd4de0cb7fd9, type: 3}
+  - {fileID: 21300000, guid: ef27da798f1986840a5cabbba5c0b69e, type: 3}
+  - {fileID: 21300000, guid: 223fc5f95b08cd84ca674ccdf8bf116b, type: 3}
+  - {fileID: 21300000, guid: 910fb91b0ddde5347902c4f3b77e145a, type: 3}
+  - {fileID: 21300000, guid: 5eec667b6713c104c92951dc655abea3, type: 3}
+  - {fileID: 21300000, guid: 0228630d07e4eb74ab5180f584ba2bf5, type: 3}
+  - {fileID: 21300000, guid: 4a720e7dc4f3175499fa95f64aa6bb7f, type: 3}
+  - {fileID: 21300000, guid: f08f475e2dd3cae4986ad0f0b5e8e8d8, type: 3}
   m_PackedSpriteNamesToIndex:
-  - ColBombDot
-  - GreenDot
-  - RowBombDot
-  - RedDot
+  - GreenRowBombDot
+  - YellowColBombDot
+  - PurpleRowBombDot
   - BlueDot
-  - PurpleDot
+  - GreenDot
+  - BlueRowBombDot
   - AreaBombDot
+  - RedRowBombDot
+  - PurpleDot
+  - RedDot
+  - RedColBombDot
+  - PurpleColBombDot
   - YellowDot
+  - BlueColBombDot
+  - YellowRowBombDot
+  - GreenColBombDot
   m_RenderDataMap: {}
   m_Tag: dotAtlas
   m_IsVariant: 0

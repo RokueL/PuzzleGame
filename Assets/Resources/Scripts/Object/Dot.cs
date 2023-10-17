@@ -23,6 +23,9 @@ public class Dot : MonoBehaviour
     private int exrow, excol;
 
     public bool isBomb;
+    public bool isRow;
+    public bool isCol;
+    public bool isArea;
     public bool isMatch;
 
     Board board;
@@ -39,7 +42,7 @@ public class Dot : MonoBehaviour
         if (board.state == Enum.Enum.State.Move)
         {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (isBomb)
+            if (isBomb && isArea)
             {
                 isMatch = true;
                 board.CheckdestroyDelay();
@@ -144,22 +147,21 @@ public class Dot : MonoBehaviour
         value = 6;
         isMatch = false;
         isBomb = true;
+        isArea = true;
     }
     public void changeRowbomb()
     {
         Debug.Log("¼¼·ÎÆøÅºº¯Çü¿Ï·á");
-        spriteRenderer.sprite = spAtlas.GetSprite("RowBombDot");
-        value = 6;
         isMatch = false;
         isBomb = true;
+        isRow = true;
     }
     public void changeColumnbomb()
     {
         Debug.Log("°¡·ÎÆøÅºº¯Çü¿Ï·á");
-        spriteRenderer.sprite = spAtlas.GetSprite("ColBombDot");
-        value = 6;
         isMatch = false;
         isBomb = true;
+        isCol = true;
     }
 
     // Start is called before the first frame update
@@ -173,34 +175,52 @@ public class Dot : MonoBehaviour
 
         targetX = (int)transform.position.x;
         targetY = (int)transform.position.y;
-        //column = targetX;
-        //row = targetY;
-       // exrow = row;
-        //excol = column;
     }
 
     public void colorCheck()
     {
-        if (!isBomb)
+        switch (value)
         {
-            switch (value)
-            {
-                case 0:
+            case 0:
+                if (isRow)
+                    spriteRenderer.sprite = spAtlas.GetSprite("RedRowBombDot");
+                else if (isCol)
+                    spriteRenderer.sprite = spAtlas.GetSprite("RedColBombDot");
+                else
                     spriteRenderer.sprite = spAtlas.GetSprite("RedDot");
-                    break;
-                case 1:
+                break;
+            case 1:
+                if (isRow)
+                    spriteRenderer.sprite = spAtlas.GetSprite("YellowRowBombDot");
+                else if (isCol)
+                    spriteRenderer.sprite = spAtlas.GetSprite("YellowColBombDot");
+                else
                     spriteRenderer.sprite = spAtlas.GetSprite("YellowDot");
-                    break;
-                case 2:
+                break;
+            case 2:
+                if (isRow)
+                    spriteRenderer.sprite = spAtlas.GetSprite("GreenRowBombDot");
+                else if (isCol)
+                    spriteRenderer.sprite = spAtlas.GetSprite("GreenColBombDot");
+                else
                     spriteRenderer.sprite = spAtlas.GetSprite("GreenDot");
-                    break;
-                case 3:
+                break;
+            case 3:
+                if (isRow)
+                    spriteRenderer.sprite = spAtlas.GetSprite("BlueRowBombDot");
+                else if (isCol)
+                    spriteRenderer.sprite = spAtlas.GetSprite("BlueColBombDot");
+                else
                     spriteRenderer.sprite = spAtlas.GetSprite("BlueDot");
-                    break;
-                case 4:
+                break;
+            case 4:
+                if (isRow)
+                    spriteRenderer.sprite = spAtlas.GetSprite("PurpleRowBombDot");
+                else if (isCol)
+                    spriteRenderer.sprite = spAtlas.GetSprite("PurpleColBombDot");
+                else
                     spriteRenderer.sprite = spAtlas.GetSprite("PurpleDot");
-                    break;
-            }
+                break;
         }
     }
 
