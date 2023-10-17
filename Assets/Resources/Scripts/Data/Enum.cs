@@ -9,7 +9,10 @@ namespace Enum
         public enum State
         {
             Move,
-            Wait
+            Check,
+            Destroy,
+            Spawn,
+            Down
         }
         public enum Bomb
         {

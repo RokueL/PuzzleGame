@@ -18,66 +18,18 @@ public class FindMatch : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
-        StartCoroutine(FindMatches());
-        
-    }
-    public void downMatch()
-    {
-        StartCoroutine(downMatches());
+        //StartCoroutine(FindMatches());
     }
 
     public void MatchFinder()
     {
-        StartCoroutine(FindMatches());
-    }
-
-    IEnumerator downMatches()
-    {
-        yield return new WaitForSeconds(.1f);
-        isLeftRight = false; isUpdown = false;
-        for (int i = 0; i < board.Width; i++)
+        if (board.state == Enum.Enum.State.Check)
         {
-            for (int j = 0; j < board.Height; j++)
-            {
-                GameObject dot = board.allDots[i, j]; // 원래 각 도트가 주인공이여서 상관 없었는데 이제 전체 체킹을 돌아욤 비교적 버그가 덜 하네요
-                if (dot != null)
-                {
-                    var dots = dot.GetComponent<Dot>();
-
-                    if (i > 0 && i < board.Width - 1) // column 가져온 거에용 Side 체크 그거에용
-                    {
-                        GameObject left = board.allDots[i - 1, j];
-                        GameObject right = board.allDots[i + 1, j];
-                        if (left != null && right != null)
-                        {
-                            if (left.GetComponent<Dot>().value == dots.value && right.GetComponent<Dot>().value == dots.value)
-                            {
-                                AddListCheck(left, right, dots.gameObject);
-                                isLeftRight = true;
-                                isUpdown = false;
-                            }
-                        }
-                    }
-                    if (j > 0 && j < board.Height - 1) // row 그거에용 Up Down 체크 그거에용 그대로 가져왔어용
-                    {
-                        GameObject up = board.allDots[i, j + 1];
-                        GameObject down = board.allDots[i, j - 1];
-                        if (up != null && down != null)
-                        {
-                            if (up.GetComponent<Dot>().value == dots.value && down.GetComponent<Dot>().value == dots.value)
-                            {
-                                AddListCheck(up, down, dots.gameObject);
-                                isUpdown = true;
-                                isLeftRight = false;
-                            }
-                        }
-                    }
-                }
-            }
+            StartCoroutine(FindMatches());
         }
     }
 
-    IEnumerator FindMatches()
+    IEnumerator FindMatches() //state == check
     {
         yield return new WaitForSeconds(.1f);
         isLeftRight = false; isUpdown = false;
@@ -123,13 +75,73 @@ public class FindMatch : MonoBehaviour
         }
 
         yield return new WaitForSeconds(.4f);
-        board.DestroyCheck();
+        board.CheckdestroyDelay();
+    }
+
+    public void MatchDown()
+    {
+        if (board.state == Enum.Enum.State.Down || board.state == Enum.Enum.State.Spawn)
+        {
+            StartCoroutine(downCheck());
+        }
+    }
+
+    IEnumerator downCheck()
+    {
+        yield return new WaitForSeconds(.1f);
+        isLeftRight = false; isUpdown = false;
+        for (int i = 0; i < board.Width; i++)
+        {
+            for (int j = 0; j < board.Height; j++)
+            {
+                GameObject dot = board.allDots[i, j]; // 원래 각 도트가 주인공이여서 상관 없었는데 이제 전체 체킹을 돌아욤 비교적 버그가 덜 하네요
+                if (dot != null)
+                {
+                    var dots = dot.GetComponent<Dot>();
+
+                    if (i > 0 && i < board.Width - 1) // column 가져온 거에용 Side 체크 그거에용
+                    {
+                        GameObject left = board.allDots[i - 1, j];
+                        GameObject right = board.allDots[i + 1, j];
+                        if (left != null && right != null)
+                        {
+                            if (left.GetComponent<Dot>().value == dots.value && right.GetComponent<Dot>().value == dots.value)
+                            {
+                                board.currentDot = dots;
+                                AddListCheck(left, right, dots.gameObject);
+                                isLeftRight = true;
+                                isUpdown = false;
+                            }
+                        }
+                    }
+                    if (j > 0 && j < board.Height - 1) // row 그거에용 Up Down 체크 그거에용 그대로 가져왔어용
+                    {
+                        GameObject up = board.allDots[i, j + 1];
+                        GameObject down = board.allDots[i, j - 1];
+                        if (up != null && down != null)
+                        {
+                            if (up.GetComponent<Dot>().value == dots.value && down.GetComponent<Dot>().value == dots.value)
+                            {
+                                board.currentDot = dots;
+                                AddListCheck(up, down, dots.gameObject);
+                                isUpdown = true;
+                                isLeftRight = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(.4f);
+        board.CheckdestroyDelay();
     }
 
 
     public void bombAddListColumn(int col, int row)
     {
         var dots = board.allDots[col, row];
+        dots.GetComponent<Dot>().isMatch = true;
         if (dots != null)
         {
             for (int i = 0; i < board.Width; i++)
@@ -155,6 +167,7 @@ public class FindMatch : MonoBehaviour
     public void bombAddListRow(int col, int row)
     {
         var dots = board.allDots[col, row];
+        dots.GetComponent<Dot>().isMatch = true;
         if (dots != null)
         {
             for (int i = 0; i < board.Height; i++)
@@ -179,6 +192,7 @@ public class FindMatch : MonoBehaviour
     public void bombAddListArea(int col, int row)
     {
         var dots = board.allDots[col, row];
+        dots.GetComponent<Dot>().isMatch = true;
         int c = 0;
         int r = 0;
         if (dots != null)
@@ -275,7 +289,7 @@ public class FindMatch : MonoBehaviour
 
         if (board.currentDot != null)
         {
-            if (board.currentDot.isMatch)
+            if (board.isMakeBomb)
             {
                 board.currentDot.changeAreabomb();
                 board.currentDot.bombType = Enum.Enum.Bomb.areaBomb;

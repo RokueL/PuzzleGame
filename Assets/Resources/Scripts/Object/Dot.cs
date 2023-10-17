@@ -42,7 +42,7 @@ public class Dot : MonoBehaviour
             if (isBomb)
             {
                 isMatch = true;
-                board.DestroyCheck();
+                board.CheckdestroyDelay();
             }
         }
         //Debug.Log(firstTouchPosition);
@@ -60,8 +60,8 @@ public class Dot : MonoBehaviour
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * Mathf.Rad2Deg;
         Debug.Log(swipeAngle);
         board.currentDot = this;
+        board.state = Enum.Enum.State.Check;
         MoveDots();
-        board.state = Enum.Enum.State.Wait;
     }
     void MoveDots()
     {
@@ -130,7 +130,7 @@ public class Dot : MonoBehaviour
                 {
                     isMatch = true;
                 }
-                board.DestroyCheck();
+                board.state = Enum.Enum.State.Check;
             }
 
             otherDot = null;
@@ -141,6 +141,7 @@ public class Dot : MonoBehaviour
     {
         Debug.Log("범위폭탄변형완료");
         spriteRenderer.sprite = spAtlas.GetSprite("AreaBombDot");
+        value = 6;
         isMatch = false;
         isBomb = true;
     }
@@ -148,6 +149,7 @@ public class Dot : MonoBehaviour
     {
         Debug.Log("세로폭탄변형완료");
         spriteRenderer.sprite = spAtlas.GetSprite("RowBombDot");
+        value = 6;
         isMatch = false;
         isBomb = true;
     }
@@ -155,6 +157,7 @@ public class Dot : MonoBehaviour
     {
         Debug.Log("가로폭탄변형완료");
         spriteRenderer.sprite = spAtlas.GetSprite("ColBombDot");
+        value = 6;
         isMatch = false;
         isBomb = true;
     }
@@ -201,39 +204,33 @@ public class Dot : MonoBehaviour
         }
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    public void dotMove()
     {
-        colorCheck();
-
-        targetX = column;
-        targetY = row;
-
-        // Mathf.Abs 절대값 구하기에요
         float x = targetX - transform.position.x;
         float y = targetY - transform.position.y;
-        if(x < 0)
+        if (x < 0)
         {
             x = x * -1;
         }
-        if( y < 0)
+        if (y < 0)
         {
             y = y * -1;
         }
 
         //자꾸 체킹한다. 혹시나 MoveDots에서 row나 column이 바뀌면 해당 위치로 이동한다~~
         //어차피 x,y 좌표가 1,2,3 이런 식이니깐 바뀐 row나 column으로 좌표를 바꾸면 된다.
-        if(x > 0.1f) //제자리만 아니면 이동한다고요~
+        if (x > 0.1f) //제자리만 아니면 이동한다고요~
         {
             tempPosition = new Vector2(targetX, transform.position.y); //바뀐 column위치로 저장~
             transform.position = Vector2.Lerp(transform.position, tempPosition, swipeSpeed); // 천천히 이동하도록 해요
-            if (board.allDots[column,row] != this.gameObject) // 값은 옮겼지만 오브젝트가 매칭이 안되면 새로 등록시킨다.
+            if (board.allDots[column, row] != this.gameObject) // 값은 옮겼지만 오브젝트가 매칭이 안되면 새로 등록시킨다.
             {
                 board.allDots[column, row] = this.gameObject;
             }
-            findMatch.MatchFinder();
+            if (board.state == Enum.Enum.State.Check || board.state == Enum.Enum.State.Move)
+            {
+                findMatch.MatchFinder();
+            }
         }
         else // 제자리면 암것도 하지 말어요
         {
@@ -250,13 +247,29 @@ public class Dot : MonoBehaviour
             {
                 board.allDots[column, row] = this.gameObject;
             }
-            findMatch.MatchFinder();
+            if (board.state == Enum.Enum.State.Check || board.state == Enum.Enum.State.Move || board.state == Enum.Enum.State.Spawn)
+            {
+                findMatch.MatchFinder();
+            }
         }
         else
         {
             tempPosition = new Vector2(transform.position.x, targetY);
             transform.position = tempPosition;
         }
+    }
 
+
+    // Update is called once per frame
+    void Update()
+    {
+        colorCheck();
+
+        targetX = column;
+        targetY = row;
+
+        dotMove();
+        
+       
     }
 }
