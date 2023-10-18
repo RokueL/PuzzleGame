@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Effects : MonoBehaviour
+public class EffectsPurple : MonoBehaviour
 {
 
-    public IObjectPool<GameObject> EfRedPool { get; set; }
+    public IObjectPool<GameObject> EfPurplePool { get; set; }
 
     // Start is called before the first frame update
     void Start()
+    {
+    }
+
+    public void DestroySelf()
     {
         StartCoroutine(destroySelf());
     }
@@ -17,7 +21,7 @@ public class Effects : MonoBehaviour
     IEnumerator destroySelf()
     {
         yield return new WaitForSeconds(1f);
-        EfRedPool.Release(this.gameObject);
+        EfPurplePool.Release(this.gameObject);
 
     }
 

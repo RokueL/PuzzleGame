@@ -24,6 +24,7 @@ public class Board : MonoBehaviour
     public Dot currentDot;
 
     FindMatch findMatch;
+    CameraShake camShake;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,7 @@ public class Board : MonoBehaviour
         allTiles = new GameObject[Width, Height];
         allDots = new GameObject[Width, Height];
         findMatch = FindObjectOfType<FindMatch>();
+        camShake = FindObjectOfType<CameraShake>();
         SetUp();
         CheckdestroyDelay();
     }
@@ -96,8 +98,9 @@ public class Board : MonoBehaviour
         }
     }
 
-    void makeEffect(int value, int col, int row)
+    public void makeEffect(int value, int col, int row)
     {
+        Debug.Log(value);
         var obj = ObjectPoolManager.Instance;
         Vector2 tempVec = new Vector2(col, row);
         switch (value)
@@ -105,22 +108,28 @@ public class Board : MonoBehaviour
             case 0:
                 var eff0 = obj.E_RedPool.Get();
                 eff0.transform.position = tempVec;
+                eff0.GetComponent<EffectsRed>().DestroySelf();
+                Debug.Log("ÀÌÆåÆ® »ý¼º");
                 break; 
             case 1:
                 var eff1 = obj.E_YellowPool.Get();
                 eff1.transform.position = tempVec;
+                eff1.GetComponent<EffectsYellow>().DestroySelf();
                 break;
             case 2:
                 var eff2 = obj.E_GreenPool.Get();
                 eff2.transform.position = tempVec;
+                eff2.GetComponent<EffectsGreen>().DestroySelf();
                 break;
             case 3:
                 var eff3 = obj.E_BluePool.Get();
                 eff3.transform.position = tempVec;
+                eff3.GetComponent<EffectsBlue>().DestroySelf();
                 break;
             case 4:
                 var eff4 = obj.E_PurplePool.Get();
                 eff4.transform.position = tempVec;
+                eff4.GetComponent<EffectsPurple>().DestroySelf();
                 break;
 
         }
@@ -130,11 +139,9 @@ public class Board : MonoBehaviour
     {
         if (currentDot != null)
         {
-            Debug.Log(currentDot.name);
         }
         else if(currentDot == null)
         {
-            //Debug.Log("ºñ¾ú¿À");
         }
 
         if(findMatch.match.Count == 4 || findMatch.match.Count == 7)
@@ -216,17 +223,17 @@ public class Board : MonoBehaviour
         var dotBomb = allDots[col, row].GetComponent<Dot>().bombType;
         if (dotBomb == Enum.Enum.Bomb.columnBomb)
         {
-            Debug.Log("°¡·ÎÆøÅº");
+            camShake.ShakeCam();
             findMatch.bombAddListColumn(col, row);
         }
         else if (dotBomb == Enum.Enum.Bomb.rowBomb)
         {
-            Debug.Log("¼¼·ÎÆøÅº");
+            camShake.ShakeCam();
             findMatch.bombAddListRow(col, row);
         }
         else if (dotBomb == Enum.Enum.Bomb.areaBomb)
         {
-            Debug.Log("¹üÀ§ÆøÅº");
+            camShake.ShakeCam();
             findMatch.bombAddListArea(col, row);
         }
         else
@@ -254,7 +261,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    void mathCheck(int col, int row, Vector2 vec)
+    void mathCheck(int col, int row, Vector2 vec)  //´Ù½Ã ½ºÆùÇÒ ¶§ Áßº¹ x
     {
         var dotSet = ObjectPoolManager.Instance.dotPool.Get();
         Dot dotSetD = dotSet.GetComponent<Dot>();

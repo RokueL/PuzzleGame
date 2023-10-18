@@ -156,6 +156,7 @@ public class FindMatch : MonoBehaviour
                     board.allDots[i, row].GetComponent<Dot>().isMatch = true;
                     if (board.allDots[i, row].GetComponent<Dot>().isBomb == false)
                     {
+                        board.makeEffect(board.allDots[i, row].GetComponent<Dot>().value, i, row);
                         board.allDots[i, row].GetComponent<Dot>().dottPool.Release(board.allDots[i, row]);
                         board.allDots[i, row] = null;
                     }
@@ -181,6 +182,7 @@ public class FindMatch : MonoBehaviour
                     board.allDots[col, i].GetComponent<Dot>().isMatch = true;
                     if (board.allDots[col, i].GetComponent<Dot>().isBomb == false)
                     {
+                        board.makeEffect(board.allDots[col, i].GetComponent<Dot>().value, col, i);
                         board.allDots[col, i].GetComponent<Dot>().dottPool.Release(board.allDots[col, i]);
                         board.allDots[col, i] = null;
                     }
@@ -231,6 +233,7 @@ public class FindMatch : MonoBehaviour
                         board.allDots[c, r].GetComponent<Dot>().isMatch = true;
                         if (board.allDots[c, r].GetComponent<Dot>().isBomb == false)
                         {
+                            board.makeEffect(board.allDots[c, r].GetComponent<Dot>().value, c, r);
                             board.allDots[c, r].GetComponent<Dot>().dottPool.Release(board.allDots[c, r]);
                             board.allDots[c, r] = null;
                         }

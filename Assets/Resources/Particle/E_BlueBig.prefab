@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1863984836959857904}
   - component: {fileID: 2837246573320653634}
   - component: {fileID: 7974020576372474897}
-  - component: {fileID: 4905101110948140266}
+  - component: {fileID: 63306614325838389}
   m_Layer: 0
   m_Name: E_BlueBig
   m_TagString: Untagged
@@ -52,7 +52,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4857,7 +4857,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4888,7 +4888,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4905101110948140266
+--- !u!114 &63306614325838389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4897,7 +4897,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 482921124270594483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cc14590b26afad4cb7a7f1d72823597, type: 3}
+  m_Script: {fileID: 11500000, guid: d41c6c67260cc054cb43f5009636a628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2531311412254099127
@@ -4950,7 +4950,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9755,7 +9755,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0

@@ -78,19 +78,19 @@ public class ObjectPoolManager : MonoBehaviour
             Dot dot= CreatePooledItem2().GetComponent<Dot>();
             dot.dottPool.Release(dot.gameObject);
 
-            Effects effR = CreatePooledEfRed().GetComponent<Effects>();
+            EffectsRed effR = CreatePooledEfRed().GetComponent<EffectsRed>();
             effR.EfRedPool.Release(effR.gameObject);
 
-            Effects effY = CreatePooledEfYellow().GetComponent<Effects>();
+            EffectsYellow effY = CreatePooledEfYellow().GetComponent<EffectsYellow>();
             effY.EfYellowPool.Release(effY.gameObject);
 
-            Effects effG = CreatePooledEfGreen().GetComponent<Effects>();
+            EffectsGreen effG = CreatePooledEfGreen().GetComponent<EffectsGreen>();
             effG.EfGreenPool.Release(effG.gameObject);
 
-            Effects effB = CreatePooledEfBlue().GetComponent<Effects>();
+            EffectsBlue effB = CreatePooledEfBlue().GetComponent<EffectsBlue>();
             effB.EfBluePool.Release(effB.gameObject);
 
-            Effects effP = CreatePooledEfPurple().GetComponent<Effects>();
+            EffectsPurple effP = CreatePooledEfPurple().GetComponent<EffectsPurple>();
             effP.EfPurplePool.Release(effP.gameObject);
 
             tile.transform.parent = PoolIndex.transform;
@@ -166,21 +166,21 @@ public class ObjectPoolManager : MonoBehaviour
     private GameObject CreatePooledEfRed()
     {
         GameObject poolGO = Instantiate(EfRedPrefab);
-        poolGO.GetComponent<Effects>().EfRedPool = this.E_RedPool;
+        poolGO.GetComponent<EffectsRed>().EfRedPool = this.E_RedPool;
 
         return poolGO;
     }
     private GameObject CreatePooledEfYellow()
     {
         GameObject poolGO = Instantiate(EfYellowPrefab);
-        poolGO.GetComponent<Effects>().EfYellowPool = this.E_YellowPool;
+        poolGO.GetComponent<EffectsYellow>().EfYellowPool = this.E_YellowPool;
 
         return poolGO;
     }
     private GameObject CreatePooledEfGreen()
     {
         GameObject poolGO = Instantiate(EfGreenPrefab);
-        poolGO.GetComponent<Effects>().EfGreenPool = this.E_GreenPool;
+        poolGO.GetComponent<EffectsGreen>().EfGreenPool = this.E_GreenPool;
 
         return poolGO;
 
@@ -188,14 +188,14 @@ public class ObjectPoolManager : MonoBehaviour
     private GameObject CreatePooledEfBlue()
     {
         GameObject poolGO = Instantiate(EfBluePrefab);
-        poolGO.GetComponent<Effects>().EfBluePool = this.E_BluePool;
+        poolGO.GetComponent<EffectsBlue>().EfBluePool = this.E_BluePool;
 
         return poolGO;
     }
     private GameObject CreatePooledEfPurple()
     {
         GameObject poolGO = Instantiate(EfPurplePrefab);
-        poolGO.GetComponent<Effects>().EfPurplePool = this.E_PurplePool;
+        poolGO.GetComponent<EffectsPurple>().EfPurplePool = this.E_PurplePool;
 
         return poolGO;
     }

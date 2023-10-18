@@ -131,7 +131,7 @@ public class Dot : MonoBehaviour
             else {
                 if(isBomb)
                 {
-                    isMatch = true;
+                    //isMatch = true;
                 }
                 board.state = Enum.Enum.State.Check;
             }
