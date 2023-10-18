@@ -141,6 +141,11 @@ public class FindMatch : MonoBehaviour
     public void bombAddListColumn(int col, int row)
     {
         var dots = board.allDots[col, row];
+
+        var obj = ObjectPoolManager.Instance.E_ColBombPool.Get();
+        obj.transform.position = dots.gameObject.transform.position;
+        obj.GetComponent<EffectsColBomb>().DestroySelf();
+
         dots.GetComponent<Dot>().isMatch = true;
         if (dots != null)
         {
@@ -168,6 +173,11 @@ public class FindMatch : MonoBehaviour
     public void bombAddListRow(int col, int row)
     {
         var dots = board.allDots[col, row];
+
+        var obj = ObjectPoolManager.Instance.E_RowBombPool.Get();
+        obj.transform.position = dots.gameObject.transform.position;
+        obj.GetComponent<EffectsRowBomb>().DestroySelf();
+
         dots.GetComponent<Dot>().isMatch = true;
         if (dots != null)
         {
@@ -194,6 +204,11 @@ public class FindMatch : MonoBehaviour
     public void bombAddListArea(int col, int row)
     {
         var dots = board.allDots[col, row];
+
+        var obj = ObjectPoolManager.Instance.E_AreaBombPool.Get();
+        obj.transform.position = dots.gameObject.transform.position;
+        obj.GetComponent<EffectsAreaBomb>().DestroySelf();
+
         dots.GetComponent<Dot>().isMatch = true;
         int c = 0;
         int r = 0;

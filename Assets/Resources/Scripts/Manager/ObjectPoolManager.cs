@@ -15,6 +15,10 @@ public class ObjectPoolManager : MonoBehaviour
     public GameObject EfBluePrefab;
     public GameObject EfPurplePrefab;
 
+    public GameObject EfRowBombPrefab;
+    public GameObject EfColBombPrefab;
+    public GameObject EfAreaBombPrefab;
+
     int defaultCapacity = 100;
     int maxPoolSize = 150;
 
@@ -31,6 +35,10 @@ public class ObjectPoolManager : MonoBehaviour
     public IObjectPool<GameObject> E_GreenPool { get; private set; }
     public IObjectPool<GameObject> E_BluePool { get; private set; }
     public IObjectPool<GameObject> E_PurplePool { get; private set; }
+
+    public IObjectPool<GameObject> E_RowBombPool { get; private set; }
+    public IObjectPool<GameObject> E_ColBombPool { get; private set; }
+    public IObjectPool<GameObject> E_AreaBombPool { get; private set; }
 
     ParticleSystem a;
     private void Awake()
@@ -55,6 +63,7 @@ public class ObjectPoolManager : MonoBehaviour
         dotPool = new ObjectPool<GameObject>(CreatePooledItem2, OnTakeFromPool2, OnReturnedToPool2,
         OnDestroyPoolObject2, true, defaultCapacity, maxPoolSize);
 
+        //매치 이펙트
         E_RedPool = new ObjectPool<GameObject>(CreatePooledEfRed, OnTakeFromPoolRed, OnReturnedToPoolRed,
        OnDestroyPoolObjectRed, true, defaultCapacity, maxPoolSize);
 
@@ -69,6 +78,14 @@ public class ObjectPoolManager : MonoBehaviour
 
         E_PurplePool = new ObjectPool<GameObject>(CreatePooledEfPurple, OnTakeFromPoolPurple, OnReturnedToPoolPurple,
        OnDestroyPoolObjectPurple, true, defaultCapacity, maxPoolSize);
+
+        //폭탄 이펙트
+        E_ColBombPool = new ObjectPool<GameObject>(CreatePooledEfCol, OnTakeFromPoolCol, OnReturnedToPoolCol,
+OnDestroyPoolObjectCol, true, defaultCapacity, maxPoolSize);
+        E_RowBombPool = new ObjectPool<GameObject>(CreatePooledEfRow, OnTakeFromPoolRow, OnReturnedToPoolRow,
+OnDestroyPoolObjectRow, true, defaultCapacity, maxPoolSize);
+        E_AreaBombPool = new ObjectPool<GameObject>(CreatePooledEfArea, OnTakeFromPoolArea, OnReturnedToPoolArea,
+OnDestroyPoolObjectArea, true, defaultCapacity, maxPoolSize);
 
         //=================< 초기 미리 생성         >=====================
         for (int i = 0; i < defaultCapacity; i++)
@@ -93,6 +110,15 @@ public class ObjectPoolManager : MonoBehaviour
             EffectsPurple effP = CreatePooledEfPurple().GetComponent<EffectsPurple>();
             effP.EfPurplePool.Release(effP.gameObject);
 
+            EffectsRowBomb effRow = CreatePooledEfRow().GetComponent<EffectsRowBomb>();
+            effRow.EfRowBombPool.Release(effRow.gameObject);
+
+            EffectsColBomb effCol = CreatePooledEfCol().GetComponent<EffectsColBomb>();
+            effCol.EfColBombPool.Release(effCol.gameObject);
+
+            EffectsAreaBomb effArea = CreatePooledEfArea().GetComponent<EffectsAreaBomb>();
+            effArea.EfAreaBombPool.Release(effArea.gameObject);
+
             tile.transform.parent = PoolIndex.transform;
             dot.transform.parent = PoolIndex.transform;
             effR.transform.parent = PoolIndex.transform;
@@ -100,6 +126,9 @@ public class ObjectPoolManager : MonoBehaviour
             effG.transform.parent = PoolIndex.transform;
             effB.transform.parent = PoolIndex.transform;
             effP.transform.parent = PoolIndex.transform;
+            effRow.transform.parent = PoolIndex.transform;
+            effCol.transform.parent = PoolIndex.transform;
+            effArea.transform.parent = PoolIndex.transform;
         }
     }
 
@@ -199,6 +228,31 @@ public class ObjectPoolManager : MonoBehaviour
 
         return poolGO;
     }
+    /// <summary>
+    /// /Bomb
+    /// </summary>
+    /// <returns></returns>
+    private GameObject CreatePooledEfRow()
+    {
+        GameObject poolGO = Instantiate(EfRowBombPrefab);
+        poolGO.GetComponent<EffectsRowBomb>().EfRowBombPool = this.E_RowBombPool;
+
+        return poolGO;
+    }
+    private GameObject CreatePooledEfCol()
+    {
+        GameObject poolGO = Instantiate(EfColBombPrefab);
+        poolGO.GetComponent<EffectsColBomb>().EfColBombPool = this.E_ColBombPool;
+
+        return poolGO;
+    }
+    private GameObject CreatePooledEfArea()
+    {
+        GameObject poolGO = Instantiate(EfAreaBombPrefab);
+        poolGO.GetComponent<EffectsAreaBomb>().EfAreaBombPool = this.E_AreaBombPool;
+
+        return poolGO;
+    }
     // =================< 가져오기         >=====================
     private void OnTakeFromPoolRed(GameObject poolGo)
     {
@@ -217,6 +271,23 @@ public class ObjectPoolManager : MonoBehaviour
         poolGo.SetActive(true);
     }
     private void OnTakeFromPoolPurple(GameObject poolGo)
+    {
+        poolGo.SetActive(true);
+    }
+    /// <summary>
+    /// Bomb
+    /// </summary>
+    /// <param name="poolGo"></param>
+    /// 
+    private void OnTakeFromPoolRow(GameObject poolGo)
+    {
+        poolGo.SetActive(true);
+    }
+    private void OnTakeFromPoolCol(GameObject poolGo)
+    {
+        poolGo.SetActive(true);
+    }
+    private void OnTakeFromPoolArea(GameObject poolGo)
     {
         poolGo.SetActive(true);
     }
@@ -241,6 +312,19 @@ public class ObjectPoolManager : MonoBehaviour
     {
         poolGo.SetActive(false);
     }
+
+    private void OnReturnedToPoolRow(GameObject poolGo)
+    {
+        poolGo.SetActive(false);
+    }
+    private void OnReturnedToPoolCol(GameObject poolGo)
+    {
+        poolGo.SetActive(false);
+    }
+    private void OnReturnedToPoolArea(GameObject poolGo)
+    {
+        poolGo.SetActive(false);
+    }
     // =================< 삭제         >=====================
     private void OnDestroyPoolObjectRed(GameObject poolGo)
     {
@@ -259,6 +343,19 @@ public class ObjectPoolManager : MonoBehaviour
         Destroy(poolGo);
     }
     private void OnDestroyPoolObjectPurple(GameObject poolGo)
+    {
+        Destroy(poolGo);
+    }
+
+    private void OnDestroyPoolObjectRow(GameObject poolGo)
+    {
+        Destroy(poolGo);
+    }
+    private void OnDestroyPoolObjectCol(GameObject poolGo)
+    {
+        Destroy(poolGo);
+    }
+    private void OnDestroyPoolObjectArea(GameObject poolGo)
     {
         Destroy(poolGo);
     }

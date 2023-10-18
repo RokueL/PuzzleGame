@@ -150,7 +150,7 @@ public class Board : MonoBehaviour
             findMatch.checkColRowBomb();
             isMakeBomb = false;
         }
-        else if(findMatch.match.Count == 5 || findMatch.match.Count == 8)
+        else if(findMatch.match.Count == 5 || findMatch.match.Count == 8 || findMatch.match.Count == 9)
         {
             isMakeBomb = true;
             findMatch.checkAreaBomb();

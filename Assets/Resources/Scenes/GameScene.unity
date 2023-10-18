@@ -653,6 +653,9 @@ MonoBehaviour:
   EfGreenPrefab: {fileID: 482921124270594483, guid: e4036c390286e07409019401983c4053, type: 3}
   EfBluePrefab: {fileID: 482921124270594483, guid: b60db1c92c257ea4b8f936e79a7d2d4a, type: 3}
   EfPurplePrefab: {fileID: 482921124270594483, guid: 2e5bbed5d4505214e819dec016ee85b5, type: 3}
+  EfRowBombPrefab: {fileID: 9168627098261191392, guid: bf73c66882005b646a75a162af960a50, type: 3}
+  EfColBombPrefab: {fileID: 6549301525310137336, guid: e45b79e11ea1e3e42a5f472242f29951, type: 3}
+  EfAreaBombPrefab: {fileID: 5830904132087447843, guid: 6163eb42f037c19449cafb4a74ab1dd2, type: 3}
   PoolIndex: {fileID: 204692040}
   tiles:
   - {fileID: 0}
