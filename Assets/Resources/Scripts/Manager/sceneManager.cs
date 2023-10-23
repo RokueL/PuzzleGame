@@ -49,6 +49,7 @@ public class sceneManager : MonoBehaviour
                 }
                 break;
         }
+        time = 0;
     }
 
     private void Awake()

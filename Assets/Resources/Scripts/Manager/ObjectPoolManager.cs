@@ -152,6 +152,7 @@ OnDestroyPoolObjectArea, true, defaultCapacity, maxPoolSize);
     // =================< 가져오기         >=====================
     private void OnTakeFromPool(GameObject poolGo)
     {
+        poolGo.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/TableTile");
         poolGo.SetActive(true);
     }
     private void OnTakeFromPool2(GameObject poolGo2)
@@ -172,10 +173,12 @@ OnDestroyPoolObjectArea, true, defaultCapacity, maxPoolSize);
     // =================< 반환         >=====================
     private void OnReturnedToPool(GameObject poolGo)
     {
+        poolGo.GetComponent<SpriteRenderer>().sprite = null;
         poolGo.SetActive(false);
     }
     private void OnReturnedToPool2(GameObject poolGo2)
     {
+        poolGo2.GetComponent<SpriteRenderer>().sprite = null;
         poolGo2.SetActive(false);
     }
 
@@ -293,36 +296,44 @@ OnDestroyPoolObjectArea, true, defaultCapacity, maxPoolSize);
     }
     // =================< 반환         >=====================
     private void OnReturnedToPoolRed(GameObject poolGo)
-    {
+    { 
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     private void OnReturnedToPoolYellow(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     private void OnReturnedToPoolGreen(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     private void OnReturnedToPoolBlue(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     private void OnReturnedToPoolPurple(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
 
     private void OnReturnedToPoolRow(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     private void OnReturnedToPoolCol(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     private void OnReturnedToPoolArea(GameObject poolGo)
     {
+        Resources.UnloadUnusedAssets();
         poolGo.SetActive(false);
     }
     // =================< 삭제         >=====================
